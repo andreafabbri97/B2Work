@@ -34,13 +34,13 @@ export function Dialog({ open, onOpenChange, title, children }: Props) {
       <div
         ref={dialogRef}
         tabIndex={-1}
-        className="relative bg-white rounded-2xl shadow-soft-xl p-6 w-full max-w-lg z-10 animate-bounce-in focus:outline-none"
+        className="relative bg-white dark:bg-slate-900 rounded-2xl shadow-soft-xl p-6 w-full max-w-lg z-10 animate-bounce-in focus:outline-none border border-transparent dark:border-slate-700"
       >
         <div className="flex items-center justify-between mb-4">
-          {title && <h3 id="dialog-title" className="text-lg font-semibold text-slate-900">{title}</h3>}
+          {title && <h3 id="dialog-title" className="text-lg font-semibold text-slate-900 dark:text-slate-100">{title}</h3>}
           <button
             onClick={() => onOpenChange(false)}
-            className="p-1.5 rounded-lg hover:bg-slate-100 transition text-slate-400 hover:text-slate-600 ml-auto"
+            className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 ml-auto"
             aria-label="Chiudi"
           >
             <X className="h-5 w-5" />

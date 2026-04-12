@@ -11,9 +11,9 @@ const icons = {
 }
 
 const bgColors = {
-  success: 'bg-success-50 border-success/20',
-  error: 'bg-danger-50 border-danger/20',
-  info: 'bg-primary-50 border-primary/20',
+  success: 'bg-success-50 dark:bg-success-900/30 border-success/20',
+  error: 'bg-danger-50 dark:bg-danger-900/30 border-danger/20',
+  info: 'bg-primary-50 dark:bg-primary-900/30 border-primary/20',
 }
 
 export default function ToastContainer() {
@@ -31,8 +31,8 @@ export default function ToastContainer() {
           }`}
         >
           {icons[toast.type]}
-          <span className="text-sm font-medium text-slate-800 flex-1">{toast.message}</span>
-          <button onClick={() => removeToast(toast.id)} className="text-slate-400 hover:text-slate-600">
+          <span className="text-sm font-medium text-slate-800 dark:text-slate-200 flex-1">{toast.message}</span>
+          <button onClick={() => removeToast(toast.id)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
             <X className="h-4 w-4" />
           </button>
         </div>

@@ -70,18 +70,18 @@ export default function NewGigPage() {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900">Pubblica un annuncio</h1>
-        <p className="text-slate-600 mt-1">Compila i dettagli del lavoro che stai offrendo.</p>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Pubblica un annuncio</h1>
+        <p className="text-slate-600 dark:text-slate-400 mt-1">Compila i dettagli del lavoro che stai offrendo.</p>
       </div>
 
       {/* Progress indicator */}
       <div className="flex items-center gap-2 mb-6">
-        <div className={`flex-1 h-1.5 rounded-full ${form.title && form.category ? 'bg-primary' : 'bg-slate-200'}`} />
-        <div className={`flex-1 h-1.5 rounded-full ${form.role && form.location ? 'bg-primary' : 'bg-slate-200'}`} />
-        <div className={`flex-1 h-1.5 rounded-full ${form.price ? 'bg-primary' : 'bg-slate-200'}`} />
+        <div className={`flex-1 h-1.5 rounded-full ${form.title && form.category ? 'bg-primary' : 'bg-slate-200 dark:bg-slate-700'}`} />
+        <div className={`flex-1 h-1.5 rounded-full ${form.role && form.location ? 'bg-primary' : 'bg-slate-200 dark:bg-slate-700'}`} />
+        <div className={`flex-1 h-1.5 rounded-full ${form.price ? 'bg-primary' : 'bg-slate-200 dark:bg-slate-700'}`} />
       </div>
 
-      <div className="bg-white border border-slate-100 rounded-2xl p-6">
+      <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700 rounded-2xl p-6">
         <Form onSubmit={handleSubmit} className="space-y-4">
           <FormField>
             <FormLabel><FileText className="inline h-4 w-4 mr-1" />Titolo *</FormLabel>
@@ -110,7 +110,7 @@ export default function NewGigPage() {
                 <select
                   value={form.category}
                   onChange={(e) => handleChange('category', e.target.value)}
-                  className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 >
                   <option value="">Seleziona categoria</option>
                   {categories.map((c) => <option key={c.id} value={c.name}>{c.name}</option>)}
@@ -125,7 +125,7 @@ export default function NewGigPage() {
                 <select
                   value={form.role}
                   onChange={(e) => handleChange('role', e.target.value)}
-                  className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 >
                   <option value="">Seleziona ruolo</option>
                   {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
@@ -168,7 +168,7 @@ export default function NewGigPage() {
           </div>
 
           <div className="flex gap-3 pt-2">
-            <button type="button" onClick={() => setShowPreview(!showPreview)} className="px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition flex items-center gap-2">
+            <button type="button" onClick={() => setShowPreview(!showPreview)} className="px-4 py-2 border border-slate-200 dark:border-slate-600 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center gap-2">
               <Eye className="h-4 w-4" />
               {showPreview ? 'Nascondi' : 'Anteprima'}
             </button>
@@ -182,10 +182,10 @@ export default function NewGigPage() {
         {showPreview && form.title && (
           <div className="mt-6 border-t pt-6">
             <h3 className="text-sm font-semibold text-slate-500 mb-3">Anteprima annuncio</h3>
-            <div className="border border-slate-100 rounded-xl p-4">
+            <div className="border border-slate-100 dark:border-slate-700 rounded-xl p-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <h4 className="font-semibold text-slate-900">{form.title}</h4>
+                  <h4 className="font-semibold text-slate-900 dark:text-slate-100">{form.title}</h4>
                   <div className="flex items-center gap-2 mt-1">
                     {form.category && <Badge variant="primary">{form.category}</Badge>}
                     {form.role && <Badge variant="outline">{form.role}</Badge>}
@@ -193,7 +193,7 @@ export default function NewGigPage() {
                 </div>
                 {form.price && <span className="text-lg font-bold text-primary">&euro;{form.price}</span>}
               </div>
-              {form.description && <p className="mt-2 text-sm text-slate-600">{form.description}</p>}
+              {form.description && <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">{form.description}</p>}
               <div className="mt-2 flex gap-3 text-xs text-slate-500">
                 {form.location && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{form.location}</span>}
                 {form.date && <span className="flex items-center gap-1"><Calendar className="h-3 w-3" />{new Date(form.date).toLocaleDateString('it-IT')}</span>}

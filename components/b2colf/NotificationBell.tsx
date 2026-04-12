@@ -113,7 +113,7 @@ export default function NotificationBell() {
     <div ref={dropdownRef} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="relative p-2 rounded-xl hover:bg-slate-100 transition"
+        className="relative p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
         aria-label="Notifiche"
       >
         <Bell className="h-5 w-5 text-slate-600" />
@@ -125,9 +125,9 @@ export default function NotificationBell() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white border border-slate-200 rounded-2xl shadow-soft-xl z-50 overflow-hidden animate-fade-in-up">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
-            <h3 className="font-semibold text-slate-900">Notifiche</h3>
+        <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-2xl shadow-soft-xl z-50 overflow-hidden animate-fade-in-up">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-slate-700">
+            <h3 className="font-semibold text-slate-900 dark:text-slate-100">Notifiche</h3>
             {unreadCount > 0 && (
               <button onClick={markAllRead} className="text-xs text-primary hover:underline flex items-center gap-1">
                 <Check className="h-3 w-3" /> Segna tutte come lette
@@ -147,15 +147,15 @@ export default function NotificationBell() {
                     markRead(n.id)
                     setOpen(false)
                   }}
-                  className={`flex items-start gap-3 px-4 py-3 hover:bg-slate-50 transition border-b border-slate-50 ${
-                    !n.read ? 'bg-primary-50/50' : ''
+                  className={`flex items-start gap-3 px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition border-b border-slate-50 dark:border-slate-800 ${
+                    !n.read ? 'bg-primary-50/50 dark:bg-primary-900/20' : ''
                   }`}
                 >
-                  <div className="mt-0.5 p-1.5 rounded-lg bg-slate-100">
+                  <div className="mt-0.5 p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800">
                     {iconMap[n.type] || <Bell className="h-4 w-4 text-slate-400" />}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className={`text-sm ${!n.read ? 'font-semibold text-slate-900' : 'text-slate-700'}`}>
+                    <p className={`text-sm ${!n.read ? 'font-semibold text-slate-900 dark:text-slate-100' : 'text-slate-700 dark:text-slate-300'}`}>
                       {n.title}
                     </p>
                     {n.body && <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{n.body}</p>}

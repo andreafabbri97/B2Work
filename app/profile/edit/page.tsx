@@ -164,7 +164,7 @@ export default function EditProfilePage() {
 
   if (!user) return (
     <div className="text-center py-16">
-      <p className="text-lg font-semibold text-slate-700">Devi essere autenticato</p>
+      <p className="text-lg font-semibold text-slate-700 dark:text-slate-300">Devi essere autenticato</p>
       <Link href="/auth/signin" className="mt-4 inline-block text-primary hover:underline">Accedi</Link>
     </div>
   )
@@ -177,9 +177,9 @@ export default function EditProfilePage() {
         <ArrowLeft className="h-4 w-4" /> Torna alla dashboard
       </Link>
 
-      <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700 rounded-2xl overflow-hidden">
         {/* Header with avatar */}
-        <div className="bg-gradient-to-r from-primary-50 to-secondary-50 px-6 sm:px-8 pt-8 pb-16" />
+        <div className="bg-gradient-to-r from-primary-50 dark:from-primary-900/30 to-secondary-50 dark:to-secondary-900/30 px-6 sm:px-8 pt-8 pb-16" />
         <div className="px-6 sm:px-8 -mt-12 pb-8">
           <div className="flex items-end gap-4 mb-6">
             <div className="relative group">
@@ -196,7 +196,7 @@ export default function EditProfilePage() {
               </label>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">Modifica profilo</h1>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Modifica profilo</h1>
               <p className="text-sm text-slate-500">Aggiorna le tue informazioni professionali</p>
             </div>
           </div>
@@ -204,7 +204,7 @@ export default function EditProfilePage() {
           <Form onSubmit={handleSubmit} className="space-y-6">
             {/* Basic info */}
             <div>
-              <h3 className="font-semibold text-slate-800 mb-3">Informazioni base</h3>
+              <h3 className="font-semibold text-slate-800 dark:text-slate-200 mb-3">Informazioni base</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField>
                   <FormLabel><User className="inline h-4 w-4 mr-1" />Nome completo *</FormLabel>
@@ -224,7 +224,7 @@ export default function EditProfilePage() {
                     <select
                       value={form.role}
                       onChange={(e) => setForm(s => ({ ...s, role: e.target.value }))}
-                      className="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition"
+                      className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition"
                     >
                       <option value="">Seleziona ruolo</option>
                       {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
@@ -288,7 +288,7 @@ export default function EditProfilePage() {
 
             {/* Availability */}
             <div>
-              <h3 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+              <h3 className="font-semibold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
                 <Clock className="h-4 w-4" /> Disponibilità settimanale
               </h3>
               <div className="space-y-2">
@@ -300,7 +300,7 @@ export default function EditProfilePage() {
                         type="button"
                         onClick={() => toggleDay(day.key)}
                         className={`w-24 text-left px-3 py-2 rounded-lg text-sm font-medium transition ${
-                          isActive ? 'bg-primary text-white' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                          isActive ? 'bg-primary text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
                         }`}
                       >
                         {day.label}
@@ -321,12 +321,12 @@ export default function EditProfilePage() {
 
             {/* Certificates */}
             <div>
-              <h3 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+              <h3 className="font-semibold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
                 <Award className="h-4 w-4" /> Certificazioni
               </h3>
               <div className="flex flex-wrap gap-2 mb-3">
                 {form.certificates.map((cert) => (
-                  <span key={cert} className="inline-flex items-center gap-1 px-3 py-1.5 bg-secondary-50 text-secondary-700 rounded-lg text-sm font-medium">
+                  <span key={cert} className="inline-flex items-center gap-1 px-3 py-1.5 bg-secondary-50 dark:bg-secondary-900/30 text-secondary-700 rounded-lg text-sm font-medium">
                     {cert}
                     <button type="button" onClick={() => removeCertificate(cert)} className="ml-1 hover:text-danger">
                       <X className="h-3.5 w-3.5" />
@@ -340,7 +340,7 @@ export default function EditProfilePage() {
                     key={cert}
                     type="button"
                     onClick={() => addCertificate(cert)}
-                    className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs hover:bg-slate-200 transition"
+                    className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-lg text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition"
                   >
                     + {cert}
                   </button>
@@ -369,7 +369,7 @@ export default function EditProfilePage() {
                 <Save className="h-4 w-4" />
                 {loading ? 'Salvataggio...' : 'Salva modifiche'}
               </ShadcnButton>
-              <Link href="/dashboard" className="px-6 py-2.5 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 transition inline-flex items-center">
+              <Link href="/dashboard" className="px-6 py-2.5 border border-slate-200 dark:border-slate-600 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition inline-flex items-center">
                 Annulla
               </Link>
             </div>

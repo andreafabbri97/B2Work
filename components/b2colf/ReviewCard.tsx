@@ -19,14 +19,14 @@ function StarRating({ rating }: { rating: number }) {
 
 export default function ReviewCard({ review }: { review: Review }) {
   return (
-    <div className="border border-slate-100 rounded-xl p-4">
+    <div className="border border-slate-100 dark:border-slate-700 rounded-xl p-4">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center text-primary font-semibold text-sm">
             {review.reviewer_name?.charAt(0)?.toUpperCase() || <User className="h-4 w-4" />}
           </div>
           <div>
-            <div className="font-medium text-slate-900 text-sm">{review.reviewer_name || 'Utente'}</div>
+            <div className="font-medium text-slate-900 dark:text-slate-100 text-sm">{review.reviewer_name || 'Utente'}</div>
             <StarRating rating={review.rating} />
           </div>
         </div>
@@ -36,7 +36,7 @@ export default function ReviewCard({ review }: { review: Review }) {
           </span>
         )}
       </div>
-      <p className="mt-3 text-sm text-slate-600 leading-relaxed">{review.comment}</p>
+      <p className="mt-3 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{review.comment}</p>
     </div>
   )
 }
@@ -55,7 +55,7 @@ export function ReviewForm({ onSubmit, loading }: { onSubmit: (rating: number, c
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-2">La tua valutazione</label>
+        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">La tua valutazione</label>
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map((i) => (
             <button
@@ -77,13 +77,13 @@ export function ReviewForm({ onSubmit, loading }: { onSubmit: (rating: number, c
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">Commento (min. 10 caratteri)</label>
+        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Commento (min. 10 caratteri)</label>
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder="Racconta la tua esperienza..."
           rows={3}
-          className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
+          className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
         />
         {comment.length > 0 && comment.length < 10 && (
           <p className="text-xs text-danger mt-1">Ancora {10 - comment.length} caratteri necessari</p>

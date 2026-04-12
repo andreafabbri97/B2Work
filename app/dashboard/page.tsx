@@ -107,7 +107,7 @@ export default function DashboardPage() {
     <div className="max-w-4xl mx-auto">
       {/* Demo banner */}
       {isDemo && (
-        <div className="mb-4 p-3 bg-accent-50 border border-accent-400 rounded-xl flex items-center gap-2 text-sm text-accent-600">
+        <div className="mb-4 p-3 bg-accent-50 dark:bg-accent-900/30 border border-accent-400 rounded-xl flex items-center gap-2 text-sm text-accent-600">
           <Info className="h-4 w-4 flex-shrink-0" />
           <span><strong>Modalità Demo</strong> — Stai usando un account di test. I dati non vengono salvati.</span>
         </div>
@@ -115,17 +115,17 @@ export default function DashboardPage() {
 
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Dashboard</h1>
         <div className="flex items-center gap-2">
           <span className="text-sm text-slate-500 hidden sm:block">{user.email}</span>
-          <button onClick={() => signOut()} className="px-3 py-1.5 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition flex items-center gap-1">
+          <button onClick={() => signOut()} className="px-3 py-1.5 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center gap-1">
             <LogOut className="h-4 w-4" /> Logout
           </button>
         </div>
       </div>
 
       {/* Profile card */}
-      <div className="bg-gradient-to-r from-primary-50 to-white border border-slate-100 rounded-2xl p-6 mb-6">
+      <div className="bg-gradient-to-r from-primary-50 dark:from-primary-900/30 to-white dark:to-slate-900 border border-slate-100 dark:border-slate-700 rounded-2xl p-6 mb-6">
         <div className="flex items-center gap-4 flex-wrap">
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-200 to-primary-400 flex items-center justify-center text-white font-bold text-xl overflow-hidden">
             {profile?.avatar_url ? (
@@ -135,7 +135,7 @@ export default function DashboardPage() {
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <h2 className="text-lg font-semibold text-slate-900">{profile?.full_name || 'Completa il profilo'}</h2>
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{profile?.full_name || 'Completa il profilo'}</h2>
             <div className="flex items-center gap-3 text-sm text-slate-500 mt-0.5 flex-wrap">
               {profile?.role && <span className="flex items-center gap-1"><Briefcase className="h-3.5 w-3.5" />{profile.role}</span>}
               {profile?.city && <span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{profile.city}</span>}
@@ -152,14 +152,14 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="flex gap-2 flex-wrap">
-            <Link href="/messages" className="px-3 py-1.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition flex items-center gap-1">
+            <Link href="/messages" className="px-3 py-1.5 border border-slate-200 dark:border-slate-600 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center gap-1">
               <MessageSquare className="h-4 w-4" />
               Messaggi
               {unreadMessages > 0 && (
                 <span className="ml-1 px-1.5 py-0.5 bg-primary text-white text-[10px] font-bold rounded-full">{unreadMessages}</span>
               )}
             </Link>
-            <Link href="/profile/edit" className="px-3 py-1.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition flex items-center gap-1">
+            <Link href="/profile/edit" className="px-3 py-1.5 border border-slate-200 dark:border-slate-600 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center gap-1">
               <PenSquare className="h-4 w-4" /> Modifica
             </Link>
             <Link href="/gigs/new" className="px-3 py-1.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-600 transition flex items-center gap-1">
@@ -177,9 +177,9 @@ export default function DashboardPage() {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
           {stats.map((s) => (
-            <div key={s.label} className="border border-slate-100 rounded-xl p-4 hover:shadow-soft transition">
+            <div key={s.label} className="border border-slate-100 dark:border-slate-700 rounded-xl p-4 hover:shadow-soft transition">
               <div className="flex items-center gap-2 mb-1">{s.icon}<span className="text-xs text-slate-500">{s.label}</span></div>
-              <div className="text-2xl font-bold text-slate-900">{s.value}</div>
+              <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">{s.value}</div>
             </div>
           ))}
         </div>
@@ -199,7 +199,7 @@ export default function DashboardPage() {
       )}
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-slate-200 mb-4 overflow-x-auto scrollbar-hide">
+      <div className="flex gap-1 border-b border-slate-200 dark:border-slate-600 mb-4 overflow-x-auto scrollbar-hide">
         {tabs.map((tab) => (
           <button
             key={tab.key}
@@ -207,7 +207,7 @@ export default function DashboardPage() {
             className={`px-4 py-2 text-sm font-medium transition border-b-2 -mb-px whitespace-nowrap ${
               activeTab === tab.key
                 ? 'border-primary text-primary'
-                : 'border-transparent text-slate-500 hover:text-slate-700'
+                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
             }`}
           >
             {tab.label}
@@ -224,14 +224,14 @@ export default function DashboardPage() {
             bookings.length ? bookings.map((b) => {
               const badge = statusBadge[b.status] || { variant: 'default' as const, label: b.status || 'N/A' }
               return (
-                <div key={b.id} className="border border-slate-100 rounded-xl p-4 flex items-center justify-between">
+                <div key={b.id} className="border border-slate-100 dark:border-slate-700 rounded-xl p-4 flex items-center justify-between">
                   <div>
                     <Badge variant={badge.variant}>{badge.label}</Badge>
-                    <div className="text-sm text-slate-600 mt-1">
+                    <div className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                       {b.date ? new Date(b.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Data non specificata'}
                     </div>
                   </div>
-                  <div className="text-lg font-bold text-slate-900">&euro;{b.total_price || '-'}</div>
+                  <div className="text-lg font-bold text-slate-900 dark:text-slate-100">&euro;{b.total_price || '-'}</div>
                 </div>
               )
             }) : <div className="text-center py-8 text-slate-500">Nessuna attività trovata.</div>
@@ -239,9 +239,9 @@ export default function DashboardPage() {
 
           {activeTab === 'my_gigs' && (
             myGigs.length ? myGigs.map((g) => (
-              <Link key={g.id} href={`/gigs/${g.id}`} className="border border-slate-100 rounded-xl p-4 flex items-center justify-between hover:shadow-soft transition block">
+              <Link key={g.id} href={`/gigs/${g.id}`} className="border border-slate-100 dark:border-slate-700 rounded-xl p-4 flex items-center justify-between hover:shadow-soft transition block">
                 <div>
-                  <h3 className="font-semibold text-slate-900">{g.title}</h3>
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">{g.title}</h3>
                   <div className="flex items-center gap-2 mt-1">
                     {g.category && <Badge variant="primary">{g.category}</Badge>}
                     {g.status && <Badge variant={g.status === 'OPEN' ? 'success' : 'default'}>{g.status}</Badge>}

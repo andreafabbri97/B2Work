@@ -187,20 +187,20 @@ export default function MapView({ profiles = [], gigs = [], center, zoom, onItem
   }
 
   return (
-    <div className="relative w-full h-full min-h-[400px] rounded-2xl overflow-hidden border border-slate-200">
+    <div className="relative w-full h-full min-h-[400px] rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-600">
       <div ref={mapRef} className="w-full h-full min-h-[400px]" />
 
       {/* Locate button */}
       <button
         onClick={handleLocate}
-        className="absolute bottom-4 right-4 z-[1000] bg-white p-3 rounded-xl shadow-soft hover:shadow-soft-lg transition"
+        className="absolute bottom-4 right-4 z-[1000] bg-white dark:bg-slate-900 p-3 rounded-xl shadow-soft hover:shadow-soft-lg transition"
         title="Trova la mia posizione"
       >
         <Locate className="h-5 w-5 text-primary" />
       </button>
 
       {/* Legend */}
-      <div className="absolute bottom-4 left-4 z-[1000] bg-white/90 backdrop-blur-sm rounded-xl p-3 text-xs space-y-1">
+      <div className="absolute bottom-4 left-4 z-[1000] bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-xl p-3 text-xs space-y-1">
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 rounded-full bg-primary" />
           <span>Professionisti</span>
@@ -212,7 +212,7 @@ export default function MapView({ profiles = [], gigs = [], center, zoom, onItem
       </div>
 
       {!leafletLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-100">
+        <div className="absolute inset-0 flex items-center justify-center bg-slate-100 dark:bg-slate-800">
           <div className="text-slate-500 text-sm animate-pulse">Caricamento mappa...</div>
         </div>
       )}
@@ -223,11 +223,11 @@ export default function MapView({ profiles = [], gigs = [], center, zoom, onItem
 // Toggle button for switching between list and map view
 export function ViewToggle({ view, onChange }: { view: 'list' | 'map'; onChange: (v: 'list' | 'map') => void }) {
   return (
-    <div className="flex bg-slate-100 rounded-xl p-1">
+    <div className="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1">
       <button
         onClick={() => onChange('list')}
         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-          view === 'list' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'
+          view === 'list' ? 'bg-white dark:bg-slate-700 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
         }`}
       >
         <List className="h-4 w-4" /> Lista
@@ -235,7 +235,7 @@ export function ViewToggle({ view, onChange }: { view: 'list' | 'map'; onChange:
       <button
         onClick={() => onChange('map')}
         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-          view === 'map' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'
+          view === 'map' ? 'bg-white dark:bg-slate-700 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
         }`}
       >
         <MapIcon className="h-4 w-4" /> Mappa

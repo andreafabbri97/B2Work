@@ -89,14 +89,14 @@ export default function MessagesPage() {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <h1 className="text-2xl font-bold text-slate-900 mb-6">Messaggi</h1>
+      <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">Messaggi</h1>
 
-      <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden" style={{ height: 'calc(100vh - 220px)' }}>
+      <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700 rounded-2xl overflow-hidden" style={{ height: 'calc(100vh - 220px)' }}>
         <div className="flex h-full">
           {/* Conversation list */}
-          <div className={`w-full sm:w-80 border-r border-slate-100 flex flex-col ${selected ? 'hidden sm:flex' : 'flex'}`}>
+          <div className={`w-full sm:w-80 border-r border-slate-100 dark:border-slate-700 flex flex-col ${selected ? 'hidden sm:flex' : 'flex'}`}>
             {/* Search */}
-            <div className="p-3 border-b border-slate-100">
+            <div className="p-3 border-b border-slate-100 dark:border-slate-700">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <input
@@ -104,7 +104,7 @@ export default function MessagesPage() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Cerca conversazione..."
-                  className="w-full pl-9 pr-3 py-2 bg-slate-50 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
             </div>
@@ -124,8 +124,8 @@ export default function MessagesPage() {
                   <button
                     key={c.id}
                     onClick={() => setSelected(c)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition text-left border-b border-slate-50 ${
-                      selected?.id === c.id ? 'bg-primary-50' : ''
+                    className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition text-left border-b border-slate-50 dark:border-slate-800 ${
+                      selected?.id === c.id ? 'bg-primary-50 dark:bg-primary-900/30' : ''
                     }`}
                   >
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-100 to-primary-300 flex items-center justify-center text-primary font-semibold text-sm flex-shrink-0">
@@ -133,7 +133,7 @@ export default function MessagesPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <span className={`text-sm truncate ${(c.unread_count || 0) > 0 ? 'font-semibold text-slate-900' : 'text-slate-700'}`}>
+                        <span className={`text-sm truncate ${(c.unread_count || 0) > 0 ? 'font-semibold text-slate-900 dark:text-slate-100' : 'text-slate-700 dark:text-slate-300'}`}>
                           {c.other_user?.full_name || 'Utente'}
                         </span>
                         {c.last_message_at && (

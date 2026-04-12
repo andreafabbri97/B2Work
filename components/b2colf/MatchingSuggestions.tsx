@@ -62,7 +62,7 @@ export default function MatchingSuggestions({ type, role, category, city, limit 
     return (
       <div className="space-y-3">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-20 bg-slate-100 rounded-xl animate-pulse" />
+          <div key={i} className="h-20 bg-slate-100 dark:bg-slate-800 rounded-xl animate-pulse" />
         ))}
       </div>
     )
@@ -74,7 +74,7 @@ export default function MatchingSuggestions({ type, role, category, city, limit 
 
   return (
     <div>
-      <h3 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+      <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-3 flex items-center gap-2">
         <Sparkles className="h-4 w-4 text-accent" />
         {title || defaultTitle}
       </h3>
@@ -87,7 +87,7 @@ export default function MatchingSuggestions({ type, role, category, city, limit 
               <Link
                 key={p.id}
                 href={`/profile/${p.id}`}
-                className="border border-slate-100 rounded-xl p-4 hover:shadow-soft transition group"
+                className="border border-slate-100 dark:border-slate-700 rounded-xl p-4 hover:shadow-soft transition group"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-100 to-primary-300 flex items-center justify-center text-primary font-semibold text-sm flex-shrink-0">
@@ -98,7 +98,7 @@ export default function MatchingSuggestions({ type, role, category, city, limit 
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-slate-900 text-sm truncate group-hover:text-primary transition">{p.full_name}</div>
+                    <div className="font-medium text-slate-900 dark:text-slate-100 text-sm truncate group-hover:text-primary transition">{p.full_name}</div>
                     <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
                       {p.role && <Badge variant="secondary">{p.role}</Badge>}
                       {p.city && <span className="flex items-center gap-0.5"><MapPin className="h-3 w-3" />{p.city}</span>}
@@ -131,7 +131,7 @@ export default function MatchingSuggestions({ type, role, category, city, limit 
               href={`/gigs/${g.id}`}
               className="border border-slate-100 rounded-xl p-4 hover:shadow-soft transition group"
             >
-              <h4 className="font-medium text-slate-900 text-sm truncate group-hover:text-primary transition">{g.title}</h4>
+              <h4 className="font-medium text-slate-900 dark:text-slate-100 text-sm truncate group-hover:text-primary transition">{g.title}</h4>
               <div className="flex items-center gap-2 mt-1">
                 {g.category && <Badge variant="primary">{g.category}</Badge>}
                 {g.location && <span className="text-xs text-slate-500 flex items-center gap-0.5"><MapPin className="h-3 w-3" />{g.location}</span>}
