@@ -6,6 +6,7 @@ import Badge from '@/components/b2colf/ui/Badge'
 import { GigCardSkeleton } from '@/components/b2colf/ui/Skeleton'
 import { MapPin, Calendar, Clock, Euro, Search, PlusCircle, ArrowUpDown, Briefcase } from 'lucide-react'
 import type { Gig } from '@/lib/types'
+import { getGigs } from '@/lib/api'
 
 type SortOption = 'recent' | 'price_asc' | 'price_desc'
 
@@ -19,8 +20,7 @@ export default function GigsIndexPage() {
   useEffect(() => {
     async function fetchGigs() {
       try {
-        const res = await fetch('/api/gigs')
-        const data = await res.json()
+        const data = await getGigs()
         setGigs(data)
       } catch (err) {
         console.error(err)

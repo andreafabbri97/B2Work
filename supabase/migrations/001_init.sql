@@ -78,40 +78,55 @@ ALTER TABLE gigs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
 
 -- Profiles policies
-CREATE POLICY IF NOT EXISTS "profiles_select_public" ON profiles
+DROP POLICY IF EXISTS "profiles_select_public" ON profiles;
+CREATE POLICY "profiles_select_public" ON profiles
   FOR SELECT USING (true);
 
-CREATE POLICY IF NOT EXISTS "profiles_insert_authenticated" ON profiles
+DROP POLICY IF EXISTS "profiles_insert_authenticated" ON profiles;
+CREATE POLICY "profiles_insert_authenticated" ON profiles
   FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 
-CREATE POLICY IF NOT EXISTS "profiles_self_write" ON profiles
-  FOR UPDATE, DELETE USING (auth.uid() = id) WITH CHECK (auth.uid() = id);
+DROP POLICY IF EXISTS "profiles_update_self" ON profiles;
+CREATE POLICY "profiles_update_self" ON profiles
+  FOR UPDATE USING (auth.uid() = id) WITH CHECK (auth.uid() = id);
+
+DROP POLICY IF EXISTS "profiles_delete_self" ON profiles;
+CREATE POLICY "profiles_delete_self" ON profiles
+  FOR DELETE USING (auth.uid() = id);
 
 -- Gigs policies
-CREATE POLICY IF NOT EXISTS "gigs_select_public" ON gigs
+DROP POLICY IF EXISTS "gigs_select_public" ON gigs;
+CREATE POLICY "gigs_select_public" ON gigs
   FOR SELECT USING (true);
 
-CREATE POLICY IF NOT EXISTS "gigs_insert_authenticated" ON gigs
+DROP POLICY IF EXISTS "gigs_insert_authenticated" ON gigs;
+CREATE POLICY "gigs_insert_authenticated" ON gigs
   FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 
-CREATE POLICY IF NOT EXISTS "gigs_owner" ON gigs
-  FOR UPDATE, DELETE USING (auth.uid() = poster_id) WITH CHECK (auth.uid() = poster_id);
+DROP POLICY IF EXISTS "gigs_update_owner" ON gigs;
+CREATE POLICY "gigs_update_owner" ON gigs
+  FOR UPDATE USING (auth.uid() = poster_id) WITH CHECK (auth.uid() = poster_id);
+
+DROP POLICY IF EXISTS "gigs_delete_owner" ON gigs;
+CREATE POLICY "gigs_delete_owner" ON gigs
+  FOR DELETE USING (auth.uid() = poster_id);
 
 -- Bookings policies
-CREATE POLICY IF NOT EXISTS "bookings_insert_authenticated" ON bookings
+DROP POLICY IF EXISTS "bookings_insert_authenticated" ON bookings;
+CREATE POLICY "bookings_insert_authenticated" ON bookings
   FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 
-CREATE POLICY IF NOT EXISTS "bookings_view_owner" ON bookings
+DROP POLICY IF EXISTS "bookings_view_owner" ON bookings;
+CREATE POLICY "bookings_view_owner" ON bookings
   FOR SELECT USING (auth.uid() = host_id OR auth.uid() = colf_id);
 
-CREATE POLICY IF NOT EXISTS "bookings_owner_update" ON bookings
-  FOR UPDATE, DELETE USING (auth.uid() = host_id OR auth.uid() = colf_id) WITH CHECK (auth.uid() = host_id OR auth.uid() = colf_id);
+DROP POLICY IF EXISTS "bookings_update_owner" ON bookings;
+CREATE POLICY "bookings_update_owner" ON bookings
+  FOR UPDATE USING (auth.uid() = host_id OR auth.uid() = colf_id) WITH CHECK (auth.uid() = host_id OR auth.uid() = colf_id);
+
+DROP POLICY IF EXISTS "bookings_delete_owner" ON bookings;
+CREATE POLICY "bookings_delete_owner" ON bookings
+  FOR DELETE USING (auth.uid() = host_id OR auth.uid() = colf_id);
 
 -- Indexes and helpers
 CREATE INDEX IF NOT EXISTS idx_gigs_date ON gigs (date);
-
--- Notes:
--- - For Supabase Auth integration it is recommended to use profiles.id = auth.users.id.
---   If you want that behaviour, replace profiles.id default and add a trigger to sync with auth.users.
--- - Create a storage bucket named 'avatars' (public) via dashboard or CLI (see README).
--- - Adjust policies as needed (e.g. allow admins special rights).

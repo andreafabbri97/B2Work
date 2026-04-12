@@ -9,6 +9,7 @@ import ReviewCard from '@/components/b2colf/ReviewCard'
 import { useAuth } from '@/components/b2colf/context/AuthContext'
 import { useToast } from '@/components/b2colf/context/ToastContext'
 import type { Profile, Gig, Review } from '@/lib/types'
+import { getProfileById, getGigs, getReviews } from '@/lib/api'
 
 type Tab = 'about' | 'gigs' | 'reviews'
 
@@ -32,23 +33,16 @@ export default function ProfileClient() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [profileRes, gigsRes, reviewsRes] = await Promise.all([
-          fetch(`/api/profiles/${params.id}`),
-          fetch('/api/gigs'),
-          fetch(`/api/reviews?reviewed_id=${params.id}`),
+        const [found, allGigs, reviewsData] = await Promise.all([
+          getProfileById(params.id as string),
+          getGigs(),
+          getReviews(params.id as string),
         ])
 
-        if (!profileRes.ok) { setProfile(null); return }
-        const found: Profile = await profileRes.json()
+        if (!found) { setProfile(null); return }
         setProfile(found)
-
-        const allGigs: Gig[] = await gigsRes.json()
         setGigs(allGigs.filter((g) => g.poster_id === params.id).slice(0, 6))
-
-        if (reviewsRes.ok) {
-          const reviewsData = await reviewsRes.json()
-          setReviews(Array.isArray(reviewsData) ? reviewsData : [])
-        }
+        setReviews(reviewsData)
       } catch (err) {
         console.error('Errore caricamento profilo:', err)
       } finally {

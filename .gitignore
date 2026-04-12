@@ -27,3 +27,4 @@ dev.err.log
 *.tsbuildinfo
 next-env.d.ts
 .claude/
+supabase/.temp/

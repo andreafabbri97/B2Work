@@ -12,6 +12,7 @@ import Badge from './ui/Badge'
 import { GigCardSkeleton } from './ui/Skeleton'
 import { MapPin, Clock, Calendar, Heart, Euro, Search, PlusCircle } from 'lucide-react'
 import type { Gig } from '@/lib/types'
+import { getGigs } from '@/lib/api'
 
 const ITEMS_PER_PAGE = 6
 
@@ -29,8 +30,7 @@ export default function GigsList() {
     async function fetchGigs() {
       setLoading(true)
       try {
-        const res = await fetch('/api/gigs')
-        const data = await res.json()
+        const data = await getGigs()
         setGigs(data)
       } catch (err) {
         console.error(err)

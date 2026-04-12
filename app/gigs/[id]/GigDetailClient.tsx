@@ -10,6 +10,7 @@ import Input from '@/components/b2colf/ui/Input'
 import Label from '@/components/b2colf/ui/Label'
 import { useToast } from '@/components/b2colf/context/ToastContext'
 import type { Gig } from '@/lib/types'
+import { getGigById, getGigs } from '@/lib/api'
 
 export default function GigDetailClient() {
   const params = useParams()
@@ -23,17 +24,14 @@ export default function GigDetailClient() {
   useEffect(() => {
     async function fetchGig() {
       try {
-        // Fetch the single gig by ID instead of all gigs
-        const res = await fetch(`/api/gigs/${params.id}`)
-        if (!res.ok) { setGig(null); return }
-        const found: Gig = await res.json()
+        const found = await getGigById(params.id as string)
+        if (!found) { setGig(null); return }
         setGig(found)
 
         // Fetch related gigs (same category) separately
         if (found.category) {
-          const allRes = await fetch('/api/gigs')
-          const allGigs: Gig[] = await allRes.json()
-          setRelated(allGigs.filter((g) => g.id !== found.id && g.category === found.category).slice(0, 3))
+          const allGigs = await getGigs({ category: found.category })
+          setRelated(allGigs.filter((g) => g.id !== found.id).slice(0, 3))
         }
       } catch (err) {
         console.error('Errore caricamento annuncio:', err)

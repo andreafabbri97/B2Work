@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Sparkles, MapPin, Star, Euro, ArrowRight } from 'lucide-react'
 import Badge from '@/components/b2colf/ui/Badge'
 import type { Profile, Gig } from '@/lib/types'
+import { getMatchingGigs, getProfiles } from '@/lib/api'
 
 type Props = {
   type: 'professionals' | 'gigs'
@@ -40,10 +41,12 @@ export default function MatchingSuggestions({ type, role, category, city, limit 
           }
         }
 
-        const res = await fetch(`/api/matching?${params}`)
-        if (res.ok) {
-          const data = await res.json()
-          setItems(Array.isArray(data) ? data : [])
+        if (type === 'gigs') {
+          const data = await getMatchingGigs({ category, city })
+          setItems(data)
+        } else {
+          const data = await getProfiles({ city, role })
+          setItems(data.slice(0, limit))
         }
       } catch (err) {
         console.error('Errore caricamento suggerimenti:', err)

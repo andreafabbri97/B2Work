@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useFilter } from './context/FilterContext'
+import { getCategories } from '@/lib/api'
 
 type Category = { id: number; slug: string; name: string }
 
@@ -12,8 +13,7 @@ export default function MobileCategoryFilter() {
   useEffect(() => {
     async function fetchCats() {
       try {
-        const res = await fetch('/api/categories')
-        const data = await res.json()
+        const data = await getCategories()
         setCats(data)
       } catch (err) {
         console.error(err)

@@ -14,6 +14,7 @@ import { FilterProvider, useFilter } from '@/components/b2colf/context/FilterCon
 import { FavoritesProvider } from '@/components/b2colf/context/FavoritesContext'
 import { useAuth } from '@/components/b2colf/context/AuthContext'
 import type { Profile, Gig } from '@/lib/types'
+import { getProfiles, getGigs } from '@/lib/api'
 
 const MapView = dynamic(() => import('@/components/b2colf/MapView'), {
   ssr: false,
@@ -49,14 +50,12 @@ function DiscoveryContent() {
 
     async function fetchMapData() {
       try {
-        const [profilesRes, gigsRes] = await Promise.all([
-          fetch('/api/profiles'),
-          fetch('/api/gigs'),
+        const [profilesData, gigsData] = await Promise.all([
+          getProfiles(),
+          getGigs(),
         ])
-        const profilesData = await profilesRes.json()
-        const gigsData = await gigsRes.json()
-        setProfiles(Array.isArray(profilesData) ? profilesData : [])
-        setGigs(Array.isArray(gigsData) ? gigsData : [])
+        setProfiles(profilesData)
+        setGigs(gigsData)
       } catch (err) {
         console.error('Errore caricamento dati mappa:', err)
       }

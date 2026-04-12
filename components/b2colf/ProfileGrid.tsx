@@ -6,6 +6,7 @@ import { ProfileCardSkeleton } from './ui/Skeleton'
 import { useFilter } from './context/FilterContext'
 import { Users } from 'lucide-react'
 import type { Profile } from '@/lib/types'
+import { getProfiles } from '@/lib/api'
 
 export default function ProfileGrid() {
   const [profiles, setProfiles] = useState<Profile[]>([])
@@ -17,8 +18,7 @@ export default function ProfileGrid() {
     async function fetchProfiles() {
       setLoading(true)
       try {
-        const res = await fetch('/api/profiles')
-        const data = await res.json()
+        const data = await getProfiles()
         const mapped = data.map((p: any) => ({ ...p, role: p.role || p.category }))
         setProfiles(mapped)
       } catch (err) {

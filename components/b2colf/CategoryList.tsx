@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useFilter } from './context/FilterContext'
+import { getCategories } from '@/lib/api'
 import { Utensils, Home, PartyPopper, Truck, ShoppingBag, Wrench, GraduationCap, Heart, LayoutGrid } from 'lucide-react'
 
 type Category = { id: number; slug: string; name: string }
@@ -24,8 +25,7 @@ export default function CategoryList() {
   useEffect(() => {
     async function fetchCats() {
       try {
-        const res = await fetch('/api/categories')
-        const data = await res.json()
+        const data = await getCategories()
         setCats(data)
       } catch (err) {
         console.error(err)
