@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import ProfileCard from './ProfileCard'
 import { ProfileCardSkeleton } from './ui/Skeleton'
 import { useFilter } from './context/FilterContext'
+import { useLanguage } from './context/LanguageContext'
 import { Users } from 'lucide-react'
 import type { Profile } from '@/lib/types'
 import { getProfiles } from '@/lib/api'
@@ -13,6 +14,7 @@ export default function ProfileGrid() {
   const [loading, setLoading] = useState(true)
 
   const { selectedCategory, searchQuery, sortBy } = useFilter()
+  const { t } = useLanguage()
 
   useEffect(() => {
     async function fetchProfiles() {
@@ -56,11 +58,11 @@ export default function ProfileGrid() {
 
   if (!sorted.length) return (
     <div className="text-center py-16">
-      <div className="mx-auto w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+      <div className="mx-auto w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
         <Users className="h-7 w-7 text-slate-400" />
       </div>
-      <p className="font-semibold text-slate-700 text-lg">Nessun professionista trovato</p>
-      <p className="text-sm text-slate-500 mt-2 max-w-sm mx-auto">Prova a modificare i filtri o la ricerca per trovare i professionisti che cerchi.</p>
+      <p className="font-semibold text-slate-700 dark:text-slate-300 text-lg">{t('profiles.empty_title')}</p>
+      <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 max-w-sm mx-auto">{t('profiles.empty_desc')}</p>
     </div>
   )
 

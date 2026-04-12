@@ -4,6 +4,8 @@ import { Inter } from 'next/font/google'
 import { Navbar } from '@/components/b2colf/Navbar'
 import Footer from '@/components/b2colf/Footer'
 import { AuthProvider } from '@/components/b2colf/context/AuthContext'
+import { ThemeProvider } from '@/components/b2colf/context/ThemeContext'
+import { LanguageProvider } from '@/components/b2colf/context/LanguageContext'
 import { ToastProvider } from '@/components/b2colf/context/ToastContext'
 import ToastContainer from '@/components/b2colf/ui/Toast'
 import ScrollToTop from '@/components/b2colf/ScrollToTop'
@@ -49,35 +51,47 @@ export const viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="it" className={inter.variable}>
+    <html lang="it" className={inter.variable} suppressHydrationWarning>
       <head>
         <link rel="apple-touch-icon" href="/B2Work/icons/icon-192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              (function(l) {
-                if (l.search[1] === '/') {
-                  var decoded = l.search.slice(1).split('&').map(function(s) {
-                    return s.replace(/~and~/g, '&')
+              (function(){
+                var t=localStorage.getItem('b2work-theme');
+                if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches)){
+                  document.documentElement.classList.add('dark');
+                }
+                var l=localStorage.getItem('b2work-lang');
+                if(l==='en')document.documentElement.lang='en';
+              })();
+              (function(l){
+                if(l.search[1]==='/'){
+                  var decoded=l.search.slice(1).split('&').map(function(s){
+                    return s.replace(/~and~/g,'&')
                   }).join('?');
-                  window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+                  window.history.replaceState(null,null,l.pathname.slice(0,-1)+decoded+l.hash);
                 }
               }(window.location))
             `,
           }}
         />
       </head>
-      <body className="min-h-screen bg-white text-slate-900 antialiased flex flex-col font-sans">
+      <body className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased flex flex-col font-sans transition-colors">
         <AuthProvider>
-          <ToastProvider>
-            <Navbar />
-            <main className="container mx-auto px-4 py-8 flex-1">{children}</main>
-            <Footer />
-            <ToastContainer />
-            <ScrollToTop />
-            <ServiceWorkerRegistration />
-          </ToastProvider>
+          <ThemeProvider>
+            <LanguageProvider>
+              <ToastProvider>
+                <Navbar />
+                <main className="container mx-auto px-4 py-8 flex-1">{children}</main>
+                <Footer />
+                <ToastContainer />
+                <ScrollToTop />
+                <ServiceWorkerRegistration />
+              </ToastProvider>
+            </LanguageProvider>
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>
