@@ -1,0 +1,34 @@
+{
+  "name": "b2work",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "optimize:images": "node scripts/optimize-images.js"
+  },
+  "dependencies": {
+    "@shadcn/ui": "^0.0.4",
+    "@supabase/auth-helpers-nextjs": "^0.15.0",
+    "@supabase/supabase-js": "^2.93.3",
+    "@types/leaflet": "^1.9.21",
+    "clsx": "^2.1.1",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.563.0",
+    "next": "15.5.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-leaflet": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "25.1.0",
+    "@types/react": "19.2.10",
+    "autoprefixer": "^10.0.0",
+    "postcss": "^8.0.0",
+    "sharp": "^0.34.5",
+    "tailwindcss": "^3.0.0",
+    "typescript": "^5.0.0"
+  }
+}

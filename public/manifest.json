@@ -1,0 +1,25 @@
+{
+  "name": "B2Work — Lavoro flessibile e occasionale",
+  "short_name": "B2Work",
+  "description": "Marketplace per lavori occasionali e freelance. Trova professionisti verificati o pubblica annunci.",
+  "start_url": "/B2Work/",
+  "scope": "/B2Work/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/B2Work/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/B2Work/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
