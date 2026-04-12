@@ -7,11 +7,13 @@ import { useToast } from '@/components/b2colf/context/ToastContext'
 import Input from '@/components/b2colf/ui/Input'
 import Link from 'next/link'
 import { Mail, Lock, Eye, EyeOff, Briefcase, ArrowRight, Info } from 'lucide-react'
+import { useLanguage } from '@/components/b2colf/context/LanguageContext'
 
 export default function SignInPage() {
   const { signIn, signUp, socialSignIn, user, isDemo } = useAuth()
   const router = useRouter()
   const { showToast } = useToast()
+  const { t } = useLanguage()
   const [tab, setTab] = useState<'login' | 'register'>('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -22,23 +24,23 @@ export default function SignInPage() {
 
   const passwordStrength = (() => {
     if (password.length === 0) return { level: 0, label: '', color: '' }
-    if (password.length < 6) return { level: 1, label: 'Debole', color: 'bg-danger' }
-    if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) return { level: 2, label: 'Media', color: 'bg-accent' }
-    return { level: 3, label: 'Forte', color: 'bg-success' }
+    if (password.length < 6) return { level: 1, label: t('signin.strength_weak'), color: 'bg-danger' }
+    if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) return { level: 2, label: t('signin.strength_medium'), color: 'bg-accent' }
+    return { level: 3, label: t('signin.strength_strong'), color: 'bg-success' }
   })()
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
-    if (!email || !password) { setError('Compila tutti i campi'); return }
+    if (!email || !password) { setError(t('signin.error_fill_all')); return }
     setLoading(true)
     setError(null)
     try {
       const res = await signIn(email, password)
       if (res.error) throw res.error
-      showToast('Accesso effettuato!', 'success')
+      showToast(t('signin.login_success'), 'success')
       router.push('/dashboard')
     } catch (err: any) {
-      setError(err.message || 'Credenziali non valide')
+      setError(err.message || t('signin.error_invalid_credentials'))
     } finally {
       setLoading(false)
     }
@@ -46,19 +48,19 @@ export default function SignInPage() {
 
   async function handleSignUp(e: React.FormEvent) {
     e.preventDefault()
-    if (!email || !password) { setError('Compila tutti i campi'); return }
-    if (password !== confirmPassword) { setError('Le password non coincidono'); return }
-    if (password.length < 6) { setError('La password deve avere almeno 6 caratteri'); return }
+    if (!email || !password) { setError(t('signin.error_fill_all')); return }
+    if (password !== confirmPassword) { setError(t('signin.error_passwords_mismatch')); return }
+    if (password.length < 6) { setError(t('signin.error_password_short')); return }
     setLoading(true)
     setError(null)
     try {
       const res = await signUp(email, password)
       if (res.error) throw res.error
       await fetch('/api/profiles/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, full_name: '', role: 'WORKER' }) })
-      showToast('Registrazione completata!', 'success')
+      showToast(t('signin.register_success'), 'success')
       router.push('/dashboard')
     } catch (err: any) {
-      setError(err.message || 'Errore nella registrazione')
+      setError(err.message || t('signin.error_register'))
     } finally {
       setLoading(false)
     }
@@ -80,8 +82,8 @@ export default function SignInPage() {
           <div className="inline-flex items-center justify-center w-14 h-14 bg-primary rounded-2xl mb-4">
             <Briefcase className="h-7 w-7 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Benvenuto su B2Work</h1>
-          <p className="text-slate-500 mt-1">Il marketplace del lavoro flessibile</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('signin.welcome')}</h1>
+          <p className="text-slate-500 mt-1">{t('signin.subtitle')}</p>
         </div>
 
         {/* Demo credentials panel */}
@@ -90,14 +92,14 @@ export default function SignInPage() {
             <div className="flex items-start gap-2 mb-3">
               <Info className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold text-primary-800 text-sm">Modalità Demo</h3>
-                <p className="text-xs text-primary-600 mt-0.5">Supabase non configurato. Usa queste credenziali per testare:</p>
+                <h3 className="font-semibold text-primary-800 text-sm">{t('signin.demo_mode')}</h3>
+                <p className="text-xs text-primary-600 mt-0.5">{t('signin.demo_desc')}</p>
               </div>
             </div>
             <div className="space-y-2">
               {[
-                { email: 'demo@b2work.it', pw: 'demo1234', role: 'WORKER', desc: 'Lavoratore' },
-                { email: 'host@b2work.it', pw: 'host1234', role: 'HOST', desc: 'Datore di lavoro' },
+                { email: 'demo@b2work.it', pw: 'demo1234', role: 'WORKER', desc: t('signin.role_worker') },
+                { email: 'host@b2work.it', pw: 'host1234', role: 'HOST', desc: t('signin.role_employer') },
               ].map((d) => (
                 <button
                   key={d.email}
@@ -124,13 +126,13 @@ export default function SignInPage() {
               onClick={() => { setTab('login'); setError(null) }}
               className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition ${tab === 'login' ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'}`}
             >
-              Accedi
+              {t('signin.tab_login')}
             </button>
             <button
               onClick={() => { setTab('register'); setError(null) }}
               className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition ${tab === 'register' ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'}`}
             >
-              Registrati
+              {t('signin.tab_register')}
             </button>
           </div>
 
@@ -142,12 +144,12 @@ export default function SignInPage() {
 
           <form onSubmit={tab === 'login' ? handleLogin : handleSignUp} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Email</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">{t('signin.email')}</label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <Input
                   type="email"
-                  placeholder="nome@email.com"
+                  placeholder={t('signin.email_placeholder')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10"
@@ -156,12 +158,12 @@ export default function SignInPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Password</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">{t('signin.password')}</label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <Input
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="La tua password"
+                  placeholder={t('signin.password_placeholder')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-10 pr-10"
@@ -181,19 +183,19 @@ export default function SignInPage() {
                       <div key={i} className={`flex-1 h-1 rounded-full ${i <= passwordStrength.level ? passwordStrength.color : 'bg-slate-200 dark:bg-slate-700'}`} />
                     ))}
                   </div>
-                  <p className="text-xs text-slate-500 mt-1">Sicurezza: {passwordStrength.label}</p>
+                  <p className="text-xs text-slate-500 mt-1">{t('signin.security')}: {passwordStrength.label}</p>
                 </div>
               )}
             </div>
 
             {tab === 'register' && (
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Conferma password</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">{t('signin.confirm_password')}</label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                   <Input
                     type="password"
-                    placeholder="Ripeti la password"
+                    placeholder={t('signin.confirm_password_placeholder')}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className="pl-10"
@@ -204,7 +206,7 @@ export default function SignInPage() {
 
             {tab === 'login' && (
               <div className="text-right">
-                <button type="button" className="text-sm text-primary hover:underline">Password dimenticata?</button>
+                <button type="button" className="text-sm text-primary hover:underline">{t('signin.forgot_password')}</button>
               </div>
             )}
 
@@ -213,7 +215,7 @@ export default function SignInPage() {
               disabled={loading}
               className="w-full py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary-600 transition disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              {loading ? 'Caricamento...' : tab === 'login' ? 'Accedi' : 'Crea account'}
+              {loading ? t('common.loading') : tab === 'login' ? t('signin.tab_login') : t('signin.create_account')}
               {!loading && <ArrowRight className="h-4 w-4" />}
             </button>
           </form>
@@ -221,20 +223,20 @@ export default function SignInPage() {
           {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200 dark:border-slate-600" /></div>
-            <div className="relative flex justify-center text-xs"><span className="bg-white dark:bg-slate-900 px-3 text-slate-400">oppure continua con</span></div>
+            <div className="relative flex justify-center text-xs"><span className="bg-white dark:bg-slate-900 px-3 text-slate-400">{t('signin.or_continue_with')}</span></div>
           </div>
 
           {/* Social */}
           <div className="flex gap-3">
             <button
-              onClick={() => socialSignIn('google')}
+              onClick={async () => { const r = await socialSignIn('google'); if (r?.error) showToast(r.error.message, 'error') }}
               className="flex-1 py-2.5 border border-slate-200 dark:border-slate-600 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center justify-center gap-2"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
               Google
             </button>
             <button
-              onClick={() => socialSignIn('facebook')}
+              onClick={async () => { const r = await socialSignIn('facebook'); if (r?.error) showToast(r.error.message, 'error') }}
               className="flex-1 py-2.5 border border-slate-200 dark:border-slate-600 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center justify-center gap-2"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -244,7 +246,7 @@ export default function SignInPage() {
         </div>
 
         <p className="text-center text-xs text-slate-400 mt-6">
-          Continuando, accetti i <Link href="/faq" className="underline hover:text-slate-600">Termini di servizio</Link> e la <Link href="/faq" className="underline hover:text-slate-600">Privacy policy</Link>
+          {t('signin.terms_prefix')} <Link href="/faq" className="underline hover:text-slate-600">{t('signin.terms_of_service')}</Link> {t('signin.terms_and')} <Link href="/faq" className="underline hover:text-slate-600">{t('signin.privacy_policy')}</Link>
         </p>
       </div>
     </div>

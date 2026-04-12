@@ -156,12 +156,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function socialSignIn(provider: 'google' | 'facebook') {
     if (demo) {
-      return Promise.reject(new Error('Social login non disponibile in modalità demo. Usa email e password.'))
+      return { data: null, error: { message: 'Social login non disponibile in modalità demo. Usa email e password.' } }
     }
     if (!supabase.auth.signInWithOAuth) {
-      return Promise.reject(new Error('Supabase OAuth non configurato'))
+      return { data: null, error: { message: 'OAuth non configurato' } }
     }
-    return supabase.auth.signInWithOAuth({ provider, options: { redirectTo: (typeof window !== 'undefined' && window.location.origin) ? window.location.origin + '/dashboard' : undefined } as any })
+    const redirectTo = typeof window !== 'undefined'
+      ? window.location.origin + '/B2Work/dashboard/'
+      : undefined
+    return supabase.auth.signInWithOAuth({ provider, options: { redirectTo } as any })
   }
 
   async function signOut() {

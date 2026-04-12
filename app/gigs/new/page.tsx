@@ -10,10 +10,12 @@ import { useToast } from '@/components/b2colf/context/ToastContext'
 import { MapPin, Calendar, Clock, Euro, FileText, Tag, Briefcase, Eye } from 'lucide-react'
 import { ROLES } from '@/lib/constants'
 import type { Category } from '@/lib/types'
+import { useLanguage } from '@/components/b2colf/context/LanguageContext'
 
 export default function NewGigPage() {
   const router = useRouter()
   const { showToast } = useToast()
+  const { t } = useLanguage()
   const [categories, setCategories] = useState<Category[]>([])
   const [form, setForm] = useState({ title: '', description: '', category: '', role: '', location: '', date: '', duration_hours: '', price: '' })
   const [loading, setLoading] = useState(false)
@@ -31,11 +33,11 @@ export default function NewGigPage() {
 
   const validate = () => {
     const e: Record<string, string> = {}
-    if (!form.title.trim()) e.title = 'Il titolo è obbligatorio'
-    if (!form.category) e.category = 'Seleziona una categoria'
-    if (!form.role) e.role = 'Seleziona un ruolo'
-    if (!form.location.trim()) e.location = 'Il luogo è obbligatorio'
-    if (!form.price || Number(form.price) <= 0) e.price = 'Inserisci un prezzo valido'
+    if (!form.title.trim()) e.title = t('newgig.error_title')
+    if (!form.category) e.category = t('newgig.error_category')
+    if (!form.role) e.role = t('newgig.error_role')
+    if (!form.location.trim()) e.location = t('newgig.error_location')
+    if (!form.price || Number(form.price) <= 0) e.price = t('newgig.error_price')
     setErrors(e)
     return Object.keys(e).length === 0
   }
@@ -57,8 +59,8 @@ export default function NewGigPage() {
       }
       const res = await fetch('/api/gigs', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
       const data = await res.json()
-      if (!res.ok) throw new Error(data?.error || 'Errore')
-      showToast('Annuncio pubblicato con successo!', 'success')
+      if (!res.ok) throw new Error(data?.error || t('common.error'))
+      showToast(t('newgig.success'), 'success')
       router.push('/discovery')
     } catch (err: any) {
       showToast(err.message, 'error')
@@ -70,8 +72,8 @@ export default function NewGigPage() {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Pubblica un annuncio</h1>
-        <p className="text-slate-600 dark:text-slate-400 mt-1">Compila i dettagli del lavoro che stai offrendo.</p>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('newgig.title')}</h1>
+        <p className="text-slate-600 dark:text-slate-400 mt-1">{t('newgig.subtitle')}</p>
       </div>
 
       {/* Progress indicator */}
@@ -84,18 +86,18 @@ export default function NewGigPage() {
       <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700 rounded-2xl p-6">
         <Form onSubmit={handleSubmit} className="space-y-4">
           <FormField>
-            <FormLabel><FileText className="inline h-4 w-4 mr-1" />Titolo *</FormLabel>
+            <FormLabel><FileText className="inline h-4 w-4 mr-1" />{t('newgig.form_title')} *</FormLabel>
             <FormControl>
-              <Input placeholder="es. Cameriere per evento serale" value={form.title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('title', e.target.value)} />
+              <Input placeholder={t('newgig.form_title_placeholder')} value={form.title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('title', e.target.value)} />
             </FormControl>
             {errors.title && <p className="text-xs text-danger mt-1">{errors.title}</p>}
           </FormField>
 
           <FormField>
-            <FormLabel><FileText className="inline h-4 w-4 mr-1" />Descrizione</FormLabel>
+            <FormLabel><FileText className="inline h-4 w-4 mr-1" />{t('newgig.form_description')}</FormLabel>
             <FormControl>
               <Textarea
-                placeholder="Descrivi il lavoro, i requisiti e le aspettative..."
+                placeholder={t('newgig.form_description_placeholder')}
                 value={form.description}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange('description', e.target.value)}
                 rows={4}
@@ -105,14 +107,14 @@ export default function NewGigPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField>
-              <FormLabel><Tag className="inline h-4 w-4 mr-1" />Categoria *</FormLabel>
+              <FormLabel><Tag className="inline h-4 w-4 mr-1" />{t('newgig.form_category')} *</FormLabel>
               <FormControl>
                 <select
                   value={form.category}
                   onChange={(e) => handleChange('category', e.target.value)}
                   className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 >
-                  <option value="">Seleziona categoria</option>
+                  <option value="">{t('newgig.select_category')}</option>
                   {categories.map((c) => <option key={c.id} value={c.name}>{c.name}</option>)}
                 </select>
               </FormControl>
@@ -120,14 +122,14 @@ export default function NewGigPage() {
             </FormField>
 
             <FormField>
-              <FormLabel><Briefcase className="inline h-4 w-4 mr-1" />Ruolo *</FormLabel>
+              <FormLabel><Briefcase className="inline h-4 w-4 mr-1" />{t('newgig.form_role')} *</FormLabel>
               <FormControl>
                 <select
                   value={form.role}
                   onChange={(e) => handleChange('role', e.target.value)}
                   className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 >
-                  <option value="">Seleziona ruolo</option>
+                  <option value="">{t('newgig.select_role')}</option>
                   {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
                 </select>
               </FormControl>
@@ -136,32 +138,32 @@ export default function NewGigPage() {
           </div>
 
           <FormField>
-            <FormLabel><MapPin className="inline h-4 w-4 mr-1" />Luogo *</FormLabel>
+            <FormLabel><MapPin className="inline h-4 w-4 mr-1" />{t('newgig.form_location')} *</FormLabel>
             <FormControl>
-              <Input placeholder="es. Milano, Via Roma 15" value={form.location} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('location', e.target.value)} />
+              <Input placeholder={t('newgig.form_location_placeholder')} value={form.location} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('location', e.target.value)} />
             </FormControl>
             {errors.location && <p className="text-xs text-danger mt-1">{errors.location}</p>}
           </FormField>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <FormField>
-              <FormLabel><Calendar className="inline h-4 w-4 mr-1" />Data</FormLabel>
+              <FormLabel><Calendar className="inline h-4 w-4 mr-1" />{t('newgig.form_date')}</FormLabel>
               <FormControl>
                 <Input type="datetime-local" value={form.date} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('date', e.target.value)} />
               </FormControl>
             </FormField>
 
             <FormField>
-              <FormLabel><Clock className="inline h-4 w-4 mr-1" />Durata (ore)</FormLabel>
+              <FormLabel><Clock className="inline h-4 w-4 mr-1" />{t('newgig.form_duration')}</FormLabel>
               <FormControl>
-                <Input type="number" min="1" placeholder="es. 4" value={form.duration_hours} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('duration_hours', e.target.value)} />
+                <Input type="number" min="1" placeholder={t('newgig.form_duration_placeholder')} value={form.duration_hours} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('duration_hours', e.target.value)} />
               </FormControl>
             </FormField>
 
             <FormField>
-              <FormLabel><Euro className="inline h-4 w-4 mr-1" />Prezzo (&euro;) *</FormLabel>
+              <FormLabel><Euro className="inline h-4 w-4 mr-1" />{t('newgig.form_price')} *</FormLabel>
               <FormControl>
-                <Input type="number" min="1" placeholder="es. 80" value={form.price} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('price', e.target.value)} />
+                <Input type="number" min="1" placeholder={t('newgig.form_price_placeholder')} value={form.price} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('price', e.target.value)} />
               </FormControl>
               {errors.price && <p className="text-xs text-danger mt-1">{errors.price}</p>}
             </FormField>
@@ -170,10 +172,10 @@ export default function NewGigPage() {
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={() => setShowPreview(!showPreview)} className="px-4 py-2 border border-slate-200 dark:border-slate-600 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center gap-2">
               <Eye className="h-4 w-4" />
-              {showPreview ? 'Nascondi' : 'Anteprima'}
+              {showPreview ? t('newgig.hide_preview') : t('newgig.preview')}
             </button>
             <ShadcnButton className="px-6 py-2 rounded-lg" type="submit" disabled={loading}>
-              {loading ? 'Pubblicando...' : 'Pubblica annuncio'}
+              {loading ? t('newgig.publishing') : t('newgig.publish')}
             </ShadcnButton>
           </div>
         </Form>
@@ -181,7 +183,7 @@ export default function NewGigPage() {
         {/* Preview */}
         {showPreview && form.title && (
           <div className="mt-6 border-t pt-6">
-            <h3 className="text-sm font-semibold text-slate-500 mb-3">Anteprima annuncio</h3>
+            <h3 className="text-sm font-semibold text-slate-500 mb-3">{t('newgig.preview_title')}</h3>
             <div className="border border-slate-100 dark:border-slate-700 rounded-xl p-4">
               <div className="flex items-start justify-between">
                 <div>

@@ -7,6 +7,7 @@ import { GigCardSkeleton } from '@/components/b2colf/ui/Skeleton'
 import { MapPin, Calendar, Clock, Euro, Search, PlusCircle, ArrowUpDown, Briefcase } from 'lucide-react'
 import type { Gig } from '@/lib/types'
 import { getGigs } from '@/lib/api'
+import { useLanguage } from '@/components/b2colf/context/LanguageContext'
 
 type SortOption = 'recent' | 'price_asc' | 'price_desc'
 
@@ -16,6 +17,7 @@ export default function GigsIndexPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState<SortOption>('recent')
   const [statusFilter, setStatusFilter] = useState<string>('all')
+  const { t } = useLanguage()
 
   useEffect(() => {
     async function fetchGigs() {
@@ -58,15 +60,15 @@ export default function GigsIndexPage() {
     <div className="max-w-4xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">Tutti gli annunci</h1>
-          <p className="text-slate-500 mt-1">Sfoglia tutte le opportunità di lavoro disponibili</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">{t('gigs.all_title')}</h1>
+          <p className="text-slate-500 mt-1">{t('gigs.all_subtitle')}</p>
         </div>
         <Link
           href="/gigs/new"
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl font-semibold hover:bg-primary-600 transition"
         >
           <PlusCircle className="h-4 w-4" />
-          Pubblica annuncio
+          {t('gigs.publish')}
         </Link>
       </div>
 
@@ -77,7 +79,7 @@ export default function GigsIndexPage() {
           <input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cerca per titolo, ruolo, città..."
+            placeholder={t('gigs.search_placeholder')}
             className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition"
           />
         </div>
@@ -87,9 +89,9 @@ export default function GigsIndexPage() {
             onChange={(e) => setStatusFilter(e.target.value)}
             className="border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
           >
-            <option value="all">Tutti gli stati</option>
-            <option value="OPEN">Aperti</option>
-            <option value="CLOSED">Chiusi</option>
+            <option value="all">{t('gigs.all_status')}</option>
+            <option value="OPEN">{t('gigs.open')}</option>
+            <option value="CLOSED">{t('gigs.closed')}</option>
           </select>
           <div className="flex items-center gap-1.5 border border-slate-200 dark:border-slate-600 rounded-xl px-3 py-2.5">
             <ArrowUpDown className="h-4 w-4 text-slate-400" />
@@ -98,15 +100,15 @@ export default function GigsIndexPage() {
               onChange={(e) => setSortBy(e.target.value as SortOption)}
               className="text-sm bg-transparent focus:outline-none"
             >
-              <option value="recent">Più recenti</option>
-              <option value="price_asc">Prezzo crescente</option>
-              <option value="price_desc">Prezzo decrescente</option>
+              <option value="recent">{t('sort.recent')}</option>
+              <option value="price_asc">{t('sort.price_asc')}</option>
+              <option value="price_desc">{t('sort.price_desc')}</option>
             </select>
           </div>
         </div>
       </div>
 
-      <div className="text-sm text-slate-500 mb-4">{sorted.length} annunci trovati</div>
+      <div className="text-sm text-slate-500 mb-4">{sorted.length} {t('gigs.found')}</div>
 
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -117,8 +119,8 @@ export default function GigsIndexPage() {
           <div className="mx-auto w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
             <Briefcase className="h-7 w-7 text-slate-400" />
           </div>
-          <p className="font-semibold text-slate-700 dark:text-slate-300 text-lg">Nessun annuncio trovato</p>
-          <p className="text-sm text-slate-500 mt-2">Prova a modificare la ricerca o i filtri.</p>
+          <p className="font-semibold text-slate-700 dark:text-slate-300 text-lg">{t('gigs.empty_title')}</p>
+          <p className="text-sm text-slate-500 mt-2">{t('gigspage.empty_desc')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -130,7 +132,7 @@ export default function GigsIndexPage() {
                   <div className="flex items-center gap-2 mt-1.5">
                     {g.category && <Badge variant="primary">{g.category}</Badge>}
                     {g.role && <Badge variant="outline">{g.role}</Badge>}
-                    {g.status && <Badge variant={g.status === 'OPEN' ? 'success' : 'default'}>{g.status === 'OPEN' ? 'Aperto' : 'Chiuso'}</Badge>}
+                    {g.status && <Badge variant={g.status === 'OPEN' ? 'success' : 'default'}>{g.status === 'OPEN' ? t('gigs.status_open') : t('gigs.status_closed')}</Badge>}
                   </div>
                 </div>
                 {g.price != null && (

@@ -9,12 +9,20 @@ import { StatCardSkeleton } from '@/components/b2colf/ui/Skeleton'
 import MatchingSuggestions from '@/components/b2colf/MatchingSuggestions'
 import { FileText, Send, Star, CheckCircle, MapPin, Briefcase, PenSquare, PlusCircle, LogOut, User, MessageSquare, Award, Info } from 'lucide-react'
 import type { Profile, Booking, Gig } from '@/lib/types'
+import { useLanguage } from '@/components/b2colf/context/LanguageContext'
 
-const statusBadge: Record<string, { variant: 'success' | 'accent' | 'danger' | 'default'; label: string }> = {
-  PENDING: { variant: 'accent', label: 'In attesa' },
-  CONFIRMED: { variant: 'success', label: 'Confermato' },
-  PAID: { variant: 'success', label: 'Pagato' },
-  CANCELLED: { variant: 'danger', label: 'Annullato' },
+const STATUS_BADGE_VARIANTS: Record<string, 'success' | 'accent' | 'danger' | 'default'> = {
+  PENDING: 'accent',
+  CONFIRMED: 'success',
+  PAID: 'success',
+  CANCELLED: 'danger',
+}
+
+const STATUS_LABEL_KEYS: Record<string, string> = {
+  PENDING: 'dashboard.status_pending',
+  CONFIRMED: 'dashboard.status_confirmed',
+  PAID: 'dashboard.status_paid',
+  CANCELLED: 'dashboard.status_cancelled',
 }
 
 type Tab = 'activities' | 'my_gigs' | 'applications'
@@ -22,6 +30,7 @@ type Tab = 'activities' | 'my_gigs' | 'applications'
 export default function DashboardPage() {
   const { user, supabase, signOut, isDemo, demoProfile } = useAuth()
   const router = useRouter()
+  const { t } = useLanguage()
   const [profile, setProfile] = useState<Profile | null>(null)
   const [bookings, setBookings] = useState<Booking[]>([])
   const [myGigs, setMyGigs] = useState<Gig[]>([])
@@ -91,16 +100,16 @@ export default function DashboardPage() {
 
   const completedJobs = bookings.filter(b => b.status === 'PAID').length
   const stats = [
-    { icon: <FileText className="h-5 w-5 text-primary" />, label: 'Annunci pubblicati', value: myGigs.length },
-    { icon: <Send className="h-5 w-5 text-secondary" />, label: 'Candidature inviate', value: bookings.filter(b => b.colf_id === user.id).length },
-    { icon: <Star className="h-5 w-5 text-accent" />, label: 'Rating medio', value: profile?.rating_avg?.toFixed(1) || '-' },
-    { icon: <CheckCircle className="h-5 w-5 text-success" />, label: 'Lavori completati', value: completedJobs },
+    { icon: <FileText className="h-5 w-5 text-primary" />, label: t('dashboard.stat_gigs_published'), value: myGigs.length },
+    { icon: <Send className="h-5 w-5 text-secondary" />, label: t('dashboard.stat_applications_sent'), value: bookings.filter(b => b.colf_id === user.id).length },
+    { icon: <Star className="h-5 w-5 text-accent" />, label: t('dashboard.stat_avg_rating'), value: profile?.rating_avg?.toFixed(1) || '-' },
+    { icon: <CheckCircle className="h-5 w-5 text-success" />, label: t('dashboard.stat_jobs_completed'), value: completedJobs },
   ]
 
   const tabs: { key: Tab; label: string }[] = [
-    { key: 'activities', label: 'Le mie attività' },
-    { key: 'my_gigs', label: 'I miei annunci' },
-    { key: 'applications', label: 'Candidature ricevute' },
+    { key: 'activities', label: t('dashboard.tab_activities') },
+    { key: 'my_gigs', label: t('dashboard.tab_my_gigs') },
+    { key: 'applications', label: t('dashboard.tab_applications') },
   ]
 
   return (
@@ -109,7 +118,7 @@ export default function DashboardPage() {
       {isDemo && (
         <div className="mb-4 p-3 bg-accent-50 dark:bg-accent-900/30 border border-accent-400 rounded-xl flex items-center gap-2 text-sm text-accent-600">
           <Info className="h-4 w-4 flex-shrink-0" />
-          <span><strong>Modalità Demo</strong> — Stai usando un account di test. I dati non vengono salvati.</span>
+          <span><strong>{t('signin.demo_mode')}</strong> — {t('dashboard.demo_banner')}</span>
         </div>
       )}
 
@@ -119,7 +128,7 @@ export default function DashboardPage() {
         <div className="flex items-center gap-2">
           <span className="text-sm text-slate-500 hidden sm:block">{user.email}</span>
           <button onClick={() => signOut()} className="px-3 py-1.5 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center gap-1">
-            <LogOut className="h-4 w-4" /> Logout
+            <LogOut className="h-4 w-4" /> {t('nav.logout')}
           </button>
         </div>
       </div>
@@ -135,7 +144,7 @@ export default function DashboardPage() {
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{profile?.full_name || 'Completa il profilo'}</h2>
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{profile?.full_name || t('dashboard.complete_profile')}</h2>
             <div className="flex items-center gap-3 text-sm text-slate-500 mt-0.5 flex-wrap">
               {profile?.role && <span className="flex items-center gap-1"><Briefcase className="h-3.5 w-3.5" />{profile.role}</span>}
               {profile?.city && <span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{profile.city}</span>}
@@ -146,7 +155,7 @@ export default function DashboardPage() {
               ) : null}
               {profile?.certificates && profile.certificates.length > 0 && (
                 <span className="flex items-center gap-1">
-                  <Award className="h-3.5 w-3.5" />{profile.certificates.length} certificazioni
+                  <Award className="h-3.5 w-3.5" />{profile.certificates.length} {t('dashboard.certifications')}
                 </span>
               )}
             </div>
@@ -154,16 +163,16 @@ export default function DashboardPage() {
           <div className="flex gap-2 flex-wrap">
             <Link href="/messages" className="px-3 py-1.5 border border-slate-200 dark:border-slate-600 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center gap-1">
               <MessageSquare className="h-4 w-4" />
-              Messaggi
+              {t('nav.messages')}
               {unreadMessages > 0 && (
                 <span className="ml-1 px-1.5 py-0.5 bg-primary text-white text-[10px] font-bold rounded-full">{unreadMessages}</span>
               )}
             </Link>
             <Link href="/profile/edit" className="px-3 py-1.5 border border-slate-200 dark:border-slate-600 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center gap-1">
-              <PenSquare className="h-4 w-4" /> Modifica
+              <PenSquare className="h-4 w-4" /> {t('dashboard.edit')}
             </Link>
             <Link href="/gigs/new" className="px-3 py-1.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-600 transition flex items-center gap-1">
-              <PlusCircle className="h-4 w-4" /> Pubblica
+              <PlusCircle className="h-4 w-4" /> {t('nav.publish')}
             </Link>
           </div>
         </div>
@@ -193,7 +202,7 @@ export default function DashboardPage() {
             category={profile.role}
             city={profile.city}
             limit={3}
-            title="Annunci consigliati per te"
+            title={t('dashboard.suggested_gigs')}
           />
         </div>
       )}
@@ -217,24 +226,26 @@ export default function DashboardPage() {
 
       {/* Tab content */}
       {loading ? (
-        <div className="text-sm text-slate-500">Caricamento...</div>
+        <div className="text-sm text-slate-500">{t('common.loading')}</div>
       ) : (
         <div className="space-y-3">
           {activeTab === 'activities' && (
             bookings.length ? bookings.map((b) => {
-              const badge = statusBadge[b.status] || { variant: 'default' as const, label: b.status || 'N/A' }
+              const variant = STATUS_BADGE_VARIANTS[b.status] || 'default'
+              const labelKey = STATUS_LABEL_KEYS[b.status]
+              const badge = { variant: variant as 'success' | 'accent' | 'danger' | 'default', label: labelKey ? t(labelKey) : (b.status || 'N/A') }
               return (
                 <div key={b.id} className="border border-slate-100 dark:border-slate-700 rounded-xl p-4 flex items-center justify-between">
                   <div>
                     <Badge variant={badge.variant}>{badge.label}</Badge>
                     <div className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                      {b.date ? new Date(b.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Data non specificata'}
+                      {b.date ? new Date(b.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' }) : t('dashboard.date_not_specified')}
                     </div>
                   </div>
                   <div className="text-lg font-bold text-slate-900 dark:text-slate-100">&euro;{b.total_price || '-'}</div>
                 </div>
               )
-            }) : <div className="text-center py-8 text-slate-500">Nessuna attività trovata.</div>
+            }) : <div className="text-center py-8 text-slate-500">{t('dashboard.no_activities')}</div>
           )}
 
           {activeTab === 'my_gigs' && (
@@ -251,15 +262,15 @@ export default function DashboardPage() {
               </Link>
             )) : (
               <div className="text-center py-8">
-                <p className="text-slate-500">Non hai ancora pubblicato annunci.</p>
-                <Link href="/gigs/new" className="mt-2 inline-block text-primary hover:underline font-medium">Pubblica il primo annuncio</Link>
+                <p className="text-slate-500">{t('dashboard.no_gigs')}</p>
+                <Link href="/gigs/new" className="mt-2 inline-block text-primary hover:underline font-medium">{t('dashboard.publish_first')}</Link>
               </div>
             )
           )}
 
           {activeTab === 'applications' && (
             <div className="text-center py-8 text-slate-500">
-              <p>Le candidature ricevute per i tuoi annunci appariranno qui.</p>
+              <p>{t('dashboard.applications_placeholder')}</p>
             </div>
           )}
         </div>

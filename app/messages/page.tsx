@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { MessageSquare, User, Search } from 'lucide-react'
 import ChatWindow from '@/components/b2colf/ChatWindow'
 import type { Conversation } from '@/lib/types'
+import { useLanguage } from '@/components/b2colf/context/LanguageContext'
 
 export default function MessagesPage() {
   const { user, supabase } = useAuth()
@@ -14,6 +15,7 @@ export default function MessagesPage() {
   const [selected, setSelected] = useState<Conversation | null>(null)
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
+  const { t } = useLanguage()
 
   useEffect(() => {
     if (!user) {
@@ -89,7 +91,7 @@ export default function MessagesPage() {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">Messaggi</h1>
+      <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">{t('messages.title')}</h1>
 
       <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700 rounded-2xl overflow-hidden" style={{ height: 'calc(100vh - 220px)' }}>
         <div className="flex h-full">
@@ -103,7 +105,7 @@ export default function MessagesPage() {
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Cerca conversazione..."
+                  placeholder={t('messages.search_placeholder')}
                   className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
@@ -112,12 +114,12 @@ export default function MessagesPage() {
             {/* List */}
             <div className="flex-1 overflow-y-auto">
               {loading ? (
-                <div className="p-4 text-sm text-slate-500 animate-pulse">Caricamento...</div>
+                <div className="p-4 text-sm text-slate-500 animate-pulse">{t('common.loading')}</div>
               ) : filtered.length === 0 ? (
                 <div className="p-8 text-center">
                   <MessageSquare className="h-10 w-10 text-slate-300 mx-auto mb-3" />
-                  <p className="text-sm text-slate-500">Nessuna conversazione</p>
-                  <p className="text-xs text-slate-400 mt-1">Contatta un professionista per iniziare</p>
+                  <p className="text-sm text-slate-500">{t('messages.no_conversations')}</p>
+                  <p className="text-xs text-slate-400 mt-1">{t('messages.contact_to_start')}</p>
                 </div>
               ) : (
                 filtered.map((c) => (
@@ -134,7 +136,7 @@ export default function MessagesPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
                         <span className={`text-sm truncate ${(c.unread_count || 0) > 0 ? 'font-semibold text-slate-900 dark:text-slate-100' : 'text-slate-700 dark:text-slate-300'}`}>
-                          {c.other_user?.full_name || 'Utente'}
+                          {c.other_user?.full_name || t('messages.user')}
                         </span>
                         {c.last_message_at && (
                           <span className="text-[10px] text-slate-400 flex-shrink-0">
@@ -143,7 +145,7 @@ export default function MessagesPage() {
                         )}
                       </div>
                       <div className="flex items-center justify-between mt-0.5">
-                        <p className="text-xs text-slate-500 truncate">{c.last_message || 'Nessun messaggio'}</p>
+                        <p className="text-xs text-slate-500 truncate">{c.last_message || t('messages.no_messages')}</p>
                         {(c.unread_count || 0) > 0 && (
                           <span className="w-5 h-5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center flex-shrink-0">
                             {c.unread_count}
@@ -165,7 +167,7 @@ export default function MessagesPage() {
               <div className="flex-1 flex items-center justify-center">
                 <div className="text-center">
                   <MessageSquare className="h-12 w-12 text-slate-300 mx-auto mb-3" />
-                  <p className="text-slate-500">Seleziona una conversazione</p>
+                  <p className="text-slate-500">{t('messages.select_conversation')}</p>
                 </div>
               </div>
             )}

@@ -9,15 +9,16 @@ import { Form, FormField, FormLabel, FormControl, ShadcnButton } from '@/compone
 import { User, MapPin, Briefcase, FileText, Camera, Save, ArrowLeft, Phone, Award, Clock, Plus, X } from 'lucide-react'
 import Link from 'next/link'
 import { ROLES } from '@/lib/constants'
+import { useLanguage } from '@/components/b2colf/context/LanguageContext'
 
-const DAYS = [
-  { key: 'mon', label: 'Lunedì' },
-  { key: 'tue', label: 'Martedì' },
-  { key: 'wed', label: 'Mercoledì' },
-  { key: 'thu', label: 'Giovedì' },
-  { key: 'fri', label: 'Venerdì' },
-  { key: 'sat', label: 'Sabato' },
-  { key: 'sun', label: 'Domenica' },
+const DAY_KEYS = [
+  { key: 'mon', labelKey: 'profileedit.day_mon' },
+  { key: 'tue', labelKey: 'profileedit.day_tue' },
+  { key: 'wed', labelKey: 'profileedit.day_wed' },
+  { key: 'thu', labelKey: 'profileedit.day_thu' },
+  { key: 'fri', labelKey: 'profileedit.day_fri' },
+  { key: 'sat', labelKey: 'profileedit.day_sat' },
+  { key: 'sun', labelKey: 'profileedit.day_sun' },
 ]
 
 const COMMON_CERTS = ['HACCP', 'Sicurezza sul lavoro', 'Primo soccorso', 'Antincendio', 'SAB', 'Patente B']
@@ -36,6 +37,7 @@ type FormState = {
 export default function EditProfilePage() {
   const { user, supabase } = useAuth()
   const { showToast } = useToast()
+  const { t } = useLanguage()
   const [form, setForm] = useState<FormState>({
     full_name: '', bio: '', city: '', role: '', hourly_rate: '', phone: '',
     availability: {}, certificates: [],
@@ -73,7 +75,7 @@ export default function EditProfilePage() {
     const file = e.target.files?.[0]
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        showToast('L\'immagine deve essere inferiore a 5MB', 'error')
+        showToast(t('profileedit.error_image_size'), 'error')
         return
       }
       setAvatarFile(file)
@@ -115,9 +117,9 @@ export default function EditProfilePage() {
 
   const validate = () => {
     const e: Record<string, string> = {}
-    if (!form.full_name.trim()) e.full_name = 'Il nome è obbligatorio'
-    if (!form.city.trim()) e.city = 'La città è obbligatoria'
-    if (!form.role) e.role = 'Seleziona un ruolo'
+    if (!form.full_name.trim()) e.full_name = t('profileedit.error_name')
+    if (!form.city.trim()) e.city = t('profileedit.error_city')
+    if (!form.role) e.role = t('profileedit.error_role')
     setErrors(e)
     return Object.keys(e).length === 0
   }
@@ -125,7 +127,7 @@ export default function EditProfilePage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!validate()) return
-    if (!user || !supabase) return showToast('Autenticazione richiesta', 'error')
+    if (!user || !supabase) return showToast(t('profileedit.error_auth'), 'error')
     const uid = user.id
     setLoading(true)
 
@@ -154,9 +156,9 @@ export default function EditProfilePage() {
 
       const { error } = await supabase.from('profiles').upsert(payload).select()
       if (error) throw error
-      showToast('Profilo aggiornato con successo!', 'success')
+      showToast(t('profileedit.success'), 'success')
     } catch (err: unknown) {
-      showToast(err instanceof Error ? err.message : 'Errore nel salvataggio', 'error')
+      showToast(err instanceof Error ? err.message : t('profileedit.error_save'), 'error')
     } finally {
       setLoading(false)
     }
@@ -164,8 +166,8 @@ export default function EditProfilePage() {
 
   if (!user) return (
     <div className="text-center py-16">
-      <p className="text-lg font-semibold text-slate-700 dark:text-slate-300">Devi essere autenticato</p>
-      <Link href="/auth/signin" className="mt-4 inline-block text-primary hover:underline">Accedi</Link>
+      <p className="text-lg font-semibold text-slate-700 dark:text-slate-300">{t('profileedit.must_auth')}</p>
+      <Link href="/auth/signin" className="mt-4 inline-block text-primary hover:underline">{t('signin.tab_login')}</Link>
     </div>
   )
 
@@ -174,7 +176,7 @@ export default function EditProfilePage() {
   return (
     <div className="max-w-2xl mx-auto">
       <Link href="/dashboard" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-primary transition mb-6">
-        <ArrowLeft className="h-4 w-4" /> Torna alla dashboard
+        <ArrowLeft className="h-4 w-4" /> {t('profileedit.back_to_dashboard')}
       </Link>
 
       <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700 rounded-2xl overflow-hidden">
@@ -196,18 +198,18 @@ export default function EditProfilePage() {
               </label>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Modifica profilo</h1>
-              <p className="text-sm text-slate-500">Aggiorna le tue informazioni professionali</p>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('profileedit.title')}</h1>
+              <p className="text-sm text-slate-500">{t('profileedit.subtitle')}</p>
             </div>
           </div>
 
           <Form onSubmit={handleSubmit} className="space-y-6">
             {/* Basic info */}
             <div>
-              <h3 className="font-semibold text-slate-800 dark:text-slate-200 mb-3">Informazioni base</h3>
+              <h3 className="font-semibold text-slate-800 dark:text-slate-200 mb-3">{t('profileedit.basic_info')}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField>
-                  <FormLabel><User className="inline h-4 w-4 mr-1" />Nome completo *</FormLabel>
+                  <FormLabel><User className="inline h-4 w-4 mr-1" />{t('profileedit.full_name')} *</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Mario Rossi"
@@ -219,14 +221,14 @@ export default function EditProfilePage() {
                 </FormField>
 
                 <FormField>
-                  <FormLabel><Briefcase className="inline h-4 w-4 mr-1" />Ruolo *</FormLabel>
+                  <FormLabel><Briefcase className="inline h-4 w-4 mr-1" />{t('profileedit.role')} *</FormLabel>
                   <FormControl>
                     <select
                       value={form.role}
                       onChange={(e) => setForm(s => ({ ...s, role: e.target.value }))}
                       className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition"
                     >
-                      <option value="">Seleziona ruolo</option>
+                      <option value="">{t('profileedit.select_role')}</option>
                       {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
                     </select>
                   </FormControl>
@@ -234,10 +236,10 @@ export default function EditProfilePage() {
                 </FormField>
 
                 <FormField>
-                  <FormLabel><MapPin className="inline h-4 w-4 mr-1" />Città *</FormLabel>
+                  <FormLabel><MapPin className="inline h-4 w-4 mr-1" />{t('profileedit.city')} *</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="es. Milano"
+                      placeholder={t('profileedit.city_placeholder')}
                       value={form.city}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => setForm(s => ({ ...s, city: e.target.value }))}
                     />
@@ -246,7 +248,7 @@ export default function EditProfilePage() {
                 </FormField>
 
                 <FormField>
-                  <FormLabel><Phone className="inline h-4 w-4 mr-1" />Telefono</FormLabel>
+                  <FormLabel><Phone className="inline h-4 w-4 mr-1" />{t('profileedit.phone')}</FormLabel>
                   <FormControl>
                     <Input
                       type="tel"
@@ -258,12 +260,12 @@ export default function EditProfilePage() {
                 </FormField>
 
                 <FormField>
-                  <FormLabel>Tariffa oraria (&euro;/h)</FormLabel>
+                  <FormLabel>{t('profileedit.hourly_rate')}</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
                       min="0"
-                      placeholder="es. 15"
+                      placeholder={t('profileedit.hourly_rate_placeholder')}
                       value={form.hourly_rate}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => setForm(s => ({ ...s, hourly_rate: e.target.value }))}
                     />
@@ -274,25 +276,25 @@ export default function EditProfilePage() {
 
             {/* Bio */}
             <FormField>
-              <FormLabel><FileText className="inline h-4 w-4 mr-1" />Bio</FormLabel>
+              <FormLabel><FileText className="inline h-4 w-4 mr-1" />{t('profileedit.bio')}</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Descrivi la tua esperienza, le tue competenze e cosa ti rende speciale..."
+                  placeholder={t('profileedit.bio_placeholder')}
                   value={form.bio}
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setForm(s => ({ ...s, bio: e.target.value }))}
                   rows={4}
                 />
               </FormControl>
-              <p className="text-xs text-slate-400 mt-1">{form.bio.length}/500 caratteri</p>
+              <p className="text-xs text-slate-400 mt-1">{form.bio.length}/500 {t('profileedit.characters')}</p>
             </FormField>
 
             {/* Availability */}
             <div>
               <h3 className="font-semibold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
-                <Clock className="h-4 w-4" /> Disponibilità settimanale
+                <Clock className="h-4 w-4" /> {t('profileedit.weekly_availability')}
               </h3>
               <div className="space-y-2">
-                {DAYS.map((day) => {
+                {DAY_KEYS.map((day) => {
                   const isActive = day.key in form.availability
                   return (
                     <div key={day.key} className="flex items-center gap-3">
@@ -303,7 +305,7 @@ export default function EditProfilePage() {
                           isActive ? 'bg-primary text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
                         }`}
                       >
-                        {day.label}
+                        {t(day.labelKey)}
                       </button>
                       {isActive && (
                         <Input
@@ -322,7 +324,7 @@ export default function EditProfilePage() {
             {/* Certificates */}
             <div>
               <h3 className="font-semibold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
-                <Award className="h-4 w-4" /> Certificazioni
+                <Award className="h-4 w-4" /> {t('profileedit.certifications')}
               </h3>
               <div className="flex flex-wrap gap-2 mb-3">
                 {form.certificates.map((cert) => (
@@ -348,7 +350,7 @@ export default function EditProfilePage() {
               </div>
               <div className="flex gap-2">
                 <Input
-                  placeholder="Aggiungi certificazione..."
+                  placeholder={t('profileedit.add_cert_placeholder')}
                   value={newCert}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewCert(e.target.value)}
                   onKeyDown={(e: React.KeyboardEvent) => { if (e.key === 'Enter') { e.preventDefault(); addCertificate(newCert) } }}
@@ -367,10 +369,10 @@ export default function EditProfilePage() {
             <div className="flex gap-3 pt-2">
               <ShadcnButton className="px-6 py-2.5 rounded-xl inline-flex items-center gap-2" disabled={loading}>
                 <Save className="h-4 w-4" />
-                {loading ? 'Salvataggio...' : 'Salva modifiche'}
+                {loading ? t('profileedit.saving') : t('profileedit.save_changes')}
               </ShadcnButton>
               <Link href="/dashboard" className="px-6 py-2.5 border border-slate-200 dark:border-slate-600 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition inline-flex items-center">
-                Annulla
+                {t('common.cancel')}
               </Link>
             </div>
           </Form>
