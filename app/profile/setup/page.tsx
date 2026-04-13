@@ -7,7 +7,7 @@ import { useToast } from '@/components/b2colf/context/ToastContext'
 import { useLanguage } from '@/components/b2colf/context/LanguageContext'
 import Input from '@/components/b2colf/ui/Input'
 import { Briefcase, Users, MapPin, User, ArrowRight, CheckCircle } from 'lucide-react'
-import { ROLES } from '@/lib/constants'
+import { ROLES, ROLE_KEYS } from '@/lib/constants'
 
 type AccountType = 'WORKER' | 'HOST' | null
 type Step = 'type' | 'details'
@@ -199,7 +199,7 @@ export default function ProfileSetupPage() {
                     className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition"
                   >
                     <option value="">{t('profileedit.select_role')}</option>
-                    {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
+                    {ROLES.map((r, i) => <option key={r} value={r}>{t(ROLE_KEYS[i])}</option>)}
                   </select>
                 </div>
               )}

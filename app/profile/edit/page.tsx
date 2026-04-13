@@ -6,9 +6,9 @@ import { useToast } from '@/components/b2colf/context/ToastContext'
 import Input from '@/components/b2colf/ui/Input'
 import Textarea from '@/components/b2colf/ui/Textarea'
 import { Form, FormField, FormLabel, FormControl, ShadcnButton } from '@/components/b2colf/shadcn'
-import { User, MapPin, Briefcase, FileText, Camera, Save, ArrowLeft, Phone, Award, Clock, Plus, X } from 'lucide-react'
+import { User, MapPin, Briefcase, FileText, Camera, Save, ArrowLeft, Phone, Award, Clock, Plus, X, Users, RefreshCw } from 'lucide-react'
 import Link from 'next/link'
-import { ROLES } from '@/lib/constants'
+import { ROLES, ROLE_KEYS } from '@/lib/constants'
 import { useLanguage } from '@/components/b2colf/context/LanguageContext'
 
 const DAY_KEYS = [
@@ -48,6 +48,8 @@ export default function EditProfilePage() {
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [newCert, setNewCert] = useState('')
+  const [accountType, setAccountType] = useState<'WORKER' | 'HOST'>('WORKER')
+  const [showRoleSwitch, setShowRoleSwitch] = useState(false)
 
   useEffect(() => {
     if (!user || !supabase) return
@@ -66,6 +68,7 @@ export default function EditProfilePage() {
           certificates: data.certificates || [],
         })
         if (data.avatar_url) setCurrentAvatar(data.avatar_url)
+        setAccountType(data.role === 'HOST' ? 'HOST' : 'WORKER')
       }
     }
     fetchProfile()
@@ -119,7 +122,7 @@ export default function EditProfilePage() {
     const e: Record<string, string> = {}
     if (!form.full_name.trim()) e.full_name = t('profileedit.error_name')
     if (!form.city.trim()) e.city = t('profileedit.error_city')
-    if (!form.role) e.role = t('profileedit.error_role')
+    if (accountType === 'WORKER' && !form.role) e.role = t('profileedit.error_role')
     setErrors(e)
     return Object.keys(e).length === 0
   }
@@ -146,7 +149,7 @@ export default function EditProfilePage() {
         full_name: form.full_name,
         bio: form.bio,
         city: form.city,
-        role: form.role,
+        role: accountType === 'HOST' ? 'HOST' : form.role,
         hourly_rate: form.hourly_rate ? Number(form.hourly_rate) : null,
         phone: form.phone || null,
         availability: Object.keys(form.availability).length > 0 ? form.availability : null,
@@ -203,6 +206,59 @@ export default function EditProfilePage() {
             </div>
           </div>
 
+          {/* Account type card */}
+          <div className="mb-6 p-4 bg-primary-50 dark:bg-primary-900/50 border border-primary-200 dark:border-primary-700 rounded-2xl">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className={`p-2 rounded-xl ${accountType === 'HOST' ? 'bg-secondary text-white' : 'bg-primary text-white'}`}>
+                  {accountType === 'HOST' ? <Briefcase className="h-5 w-5" /> : <Users className="h-5 w-5" />}
+                </div>
+                <div>
+                  <div className="font-semibold text-slate-900 dark:text-slate-100">
+                    {accountType === 'HOST' ? t('setup.host_title') : t('setup.worker_title')}
+                  </div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">
+                    {accountType === 'HOST' ? t('setup.host_desc') : t('setup.worker_desc')}
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowRoleSwitch(!showRoleSwitch)}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg text-sm font-medium text-primary hover:bg-primary-50 dark:hover:bg-slate-700 transition"
+              >
+                <RefreshCw className="h-3.5 w-3.5" />
+                {t('profileedit.change_role')}
+              </button>
+            </div>
+            {showRoleSwitch && (
+              <div className="mt-3 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => { setAccountType('WORKER'); setShowRoleSwitch(false); setForm(s => ({ ...s, role: '' })) }}
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition border-2 ${
+                    accountType === 'WORKER'
+                      ? 'border-primary bg-primary text-white'
+                      : 'border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:border-primary'
+                  }`}
+                >
+                  <Users className="inline h-4 w-4 mr-1.5" />{t('setup.worker_title')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setAccountType('HOST'); setShowRoleSwitch(false); setForm(s => ({ ...s, role: 'HOST' })) }}
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition border-2 ${
+                    accountType === 'HOST'
+                      ? 'border-secondary bg-secondary text-white'
+                      : 'border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:border-secondary'
+                  }`}
+                >
+                  <Briefcase className="inline h-4 w-4 mr-1.5" />{t('setup.host_title')}
+                </button>
+              </div>
+            )}
+          </div>
+
           <Form onSubmit={handleSubmit} className="space-y-6">
             {/* Basic info */}
             <div>
@@ -220,20 +276,22 @@ export default function EditProfilePage() {
                   {errors.full_name && <p className="text-xs text-danger mt-1">{errors.full_name}</p>}
                 </FormField>
 
-                <FormField>
-                  <FormLabel><Briefcase className="inline h-4 w-4 mr-1" />{t('profileedit.role')} *</FormLabel>
-                  <FormControl>
-                    <select
-                      value={form.role}
-                      onChange={(e) => setForm(s => ({ ...s, role: e.target.value }))}
-                      className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition"
-                    >
-                      <option value="">{t('profileedit.select_role')}</option>
-                      {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
-                    </select>
-                  </FormControl>
-                  {errors.role && <p className="text-xs text-danger mt-1">{errors.role}</p>}
-                </FormField>
+                {accountType === 'WORKER' && (
+                  <FormField>
+                    <FormLabel><Briefcase className="inline h-4 w-4 mr-1" />{t('profileedit.role')} *</FormLabel>
+                    <FormControl>
+                      <select
+                        value={form.role}
+                        onChange={(e) => setForm(s => ({ ...s, role: e.target.value }))}
+                        className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition"
+                      >
+                        <option value="">{t('profileedit.select_role')}</option>
+                        {ROLES.map((r, i) => <option key={r} value={r}>{t(ROLE_KEYS[i])}</option>)}
+                      </select>
+                    </FormControl>
+                    {errors.role && <p className="text-xs text-danger mt-1">{errors.role}</p>}
+                  </FormField>
+                )}
 
                 <FormField>
                   <FormLabel><MapPin className="inline h-4 w-4 mr-1" />{t('profileedit.city')} *</FormLabel>
@@ -309,7 +367,7 @@ export default function EditProfilePage() {
                       </button>
                       {isActive && (
                         <Input
-                          placeholder="es. 09:00-18:00"
+                          placeholder={t('profileedit.time_placeholder')}
                           value={form.availability[day.key]?.[0] || ''}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateDaySlot(day.key, e.target.value)}
                           className="flex-1 max-w-xs"

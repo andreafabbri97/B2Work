@@ -336,5 +336,55 @@
   "setup.complete_profile": "Complete your profile",
   "setup.worker_details_desc": "Enter your basic info to start applying for jobs.",
   "setup.host_details_desc": "Enter your basic info to start posting ads.",
-  "setup.start_using": "Start using B2Work"
+  "setup.start_using": "Start using B2Work",
+
+  "role.cameriere": "Waiter",
+  "role.colf": "Housekeeper",
+  "role.barista": "Barista",
+  "role.runner": "Runner",
+  "role.magazziniere": "Warehouse Worker",
+  "role.hostess": "Hostess",
+  "role.cuoco": "Cook",
+  "role.lavapiatti": "Dishwasher",
+  "role.addetto_pulizie": "Cleaning Staff",
+  "role.event_planner": "Event Planner",
+  "role.altro": "Other",
+
+  "categories.all": "All",
+
+  "chat.start_conversation": "Start the conversation...",
+  "chat.message_placeholder": "Write a message...",
+  "chat.user_fallback": "User",
+  "chat.template1": "Hi, are you available for this job?",
+  "chat.template2": "I confirm the booking, thanks!",
+  "chat.template3": "Can we discuss the details?",
+  "chat.template4": "What time can we start?",
+
+  "notifications.title": "Notifications",
+  "notifications.mark_all_read": "Mark all as read",
+  "notifications.empty": "No notifications",
+  "notifications.now": "Now",
+  "notifications.min_ago": "min ago",
+  "notifications.hours_ago": "hours ago",
+  "notifications.days_ago": "days ago",
+
+  "reviews.user_fallback": "User",
+  "reviews.your_rating": "Your rating",
+  "reviews.comment_label": "Comment (min. 10 characters)",
+  "reviews.comment_placeholder": "Tell us about your experience...",
+  "reviews.submitting": "Submitting...",
+  "reviews.submit": "Submit review",
+
+  "map.professionals": "Professionals",
+  "map.gigs": "Ads",
+  "map.loading": "Loading map...",
+  "map.list_view": "List",
+  "map.map_view": "Map",
+
+  "profileedit.time_placeholder": "e.g. 09:00-18:00",
+
+  "profileedit.change_role": "Change role",
+
+  "gigs.apply_error": "Application error",
+  "common.unknown_error": "Unknown error"
 }

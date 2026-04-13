@@ -336,5 +336,55 @@
   "setup.complete_profile": "Completa il tuo profilo",
   "setup.worker_details_desc": "Inserisci le informazioni base per iniziare a candidarti.",
   "setup.host_details_desc": "Inserisci le informazioni base per iniziare a pubblicare annunci.",
-  "setup.start_using": "Inizia a usare B2Work"
+  "setup.start_using": "Inizia a usare B2Work",
+
+  "role.cameriere": "Cameriere",
+  "role.colf": "Colf",
+  "role.barista": "Barista",
+  "role.runner": "Runner",
+  "role.magazziniere": "Magazziniere",
+  "role.hostess": "Hostess",
+  "role.cuoco": "Cuoco",
+  "role.lavapiatti": "Lavapiatti",
+  "role.addetto_pulizie": "Addetto pulizie",
+  "role.event_planner": "Event Planner",
+  "role.altro": "Altro",
+
+  "categories.all": "Tutte",
+
+  "chat.start_conversation": "Inizia la conversazione...",
+  "chat.message_placeholder": "Scrivi un messaggio...",
+  "chat.user_fallback": "Utente",
+  "chat.template1": "Ciao, sei disponibile per questo lavoro?",
+  "chat.template2": "Confermo la prenotazione, grazie!",
+  "chat.template3": "Possiamo discutere i dettagli?",
+  "chat.template4": "A che ora possiamo iniziare?",
+
+  "notifications.title": "Notifiche",
+  "notifications.mark_all_read": "Segna tutte come lette",
+  "notifications.empty": "Nessuna notifica",
+  "notifications.now": "Adesso",
+  "notifications.min_ago": "min fa",
+  "notifications.hours_ago": "ore fa",
+  "notifications.days_ago": "giorni fa",
+
+  "reviews.user_fallback": "Utente",
+  "reviews.your_rating": "La tua valutazione",
+  "reviews.comment_label": "Commento (min. 10 caratteri)",
+  "reviews.comment_placeholder": "Racconta la tua esperienza...",
+  "reviews.submitting": "Invio...",
+  "reviews.submit": "Invia recensione",
+
+  "map.professionals": "Professionisti",
+  "map.gigs": "Annunci",
+  "map.loading": "Caricamento mappa...",
+  "map.list_view": "Lista",
+  "map.map_view": "Mappa",
+
+  "profileedit.time_placeholder": "es. 09:00-18:00",
+
+  "profileedit.change_role": "Cambia ruolo",
+
+  "gigs.apply_error": "Errore nella candidatura",
+  "common.unknown_error": "Errore sconosciuto"
 }

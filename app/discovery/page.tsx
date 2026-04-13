@@ -21,7 +21,7 @@ const MapView = dynamic(() => import('@/components/b2colf/MapView'), {
   ssr: false,
   loading: () => (
     <div className="w-full h-[500px] bg-slate-100 dark:bg-slate-800 rounded-2xl animate-pulse flex items-center justify-center">
-      <span className="text-slate-400 text-sm">Caricamento mappa...</span>
+      <span className="text-slate-400 text-sm animate-pulse">...</span>
     </div>
   ),
 })

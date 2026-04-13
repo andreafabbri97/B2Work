@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useFilter } from './context/FilterContext'
+import { useLanguage } from './context/LanguageContext'
 import { getCategories } from '@/lib/api'
 
 type Category = { id: number; slug: string; name: string }
@@ -9,6 +10,7 @@ type Category = { id: number; slug: string; name: string }
 export default function MobileCategoryFilter() {
   const [cats, setCats] = useState<Category[]>([])
   const { selectedCategory, setSelectedCategory } = useFilter()
+  const { t } = useLanguage()
 
   useEffect(() => {
     async function fetchCats() {
@@ -32,7 +34,7 @@ export default function MobileCategoryFilter() {
             : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
         }`}
       >
-        Tutte
+        {t('categories.all')}
       </button>
       {cats.map((c) => (
         <button

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { MapPin, List, Map as MapIcon, Locate } from 'lucide-react'
+import { useLanguage } from '@/components/b2colf/context/LanguageContext'
 import type { Profile, Gig } from '@/lib/types'
 
 // Leaflet types
@@ -85,6 +86,7 @@ export default function MapView({ profiles = [], gigs = [], center, zoom, onItem
   const mapInstanceRef = useRef<L.Map | null>(null)
   const [leafletLoaded, setLeafletLoaded] = useState(false)
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
+  const { t } = useLanguage()
 
   const items = toMapItems(profiles, gigs)
 
@@ -203,17 +205,17 @@ export default function MapView({ profiles = [], gigs = [], center, zoom, onItem
       <div className="absolute bottom-4 left-4 z-[1000] bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-xl p-3 text-xs space-y-1">
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 rounded-full bg-primary" />
-          <span>Professionisti</span>
+          <span>{t('map.professionals')}</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 rounded-full bg-accent" />
-          <span>Annunci</span>
+          <span>{t('map.gigs')}</span>
         </div>
       </div>
 
       {!leafletLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-slate-100 dark:bg-slate-800">
-          <div className="text-slate-500 text-sm animate-pulse">Caricamento mappa...</div>
+          <div className="text-slate-500 text-sm animate-pulse">{t('map.loading')}</div>
         </div>
       )}
     </div>
@@ -222,6 +224,7 @@ export default function MapView({ profiles = [], gigs = [], center, zoom, onItem
 
 // Toggle button for switching between list and map view
 export function ViewToggle({ view, onChange }: { view: 'list' | 'map'; onChange: (v: 'list' | 'map') => void }) {
+  const { t } = useLanguage()
   return (
     <div className="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1">
       <button
@@ -230,7 +233,7 @@ export function ViewToggle({ view, onChange }: { view: 'list' | 'map'; onChange:
           view === 'list' ? 'bg-white dark:bg-slate-700 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
         }`}
       >
-        <List className="h-4 w-4" /> Lista
+        <List className="h-4 w-4" /> {t('map.list_view')}
       </button>
       <button
         onClick={() => onChange('map')}
@@ -238,7 +241,7 @@ export function ViewToggle({ view, onChange }: { view: 'list' | 'map'; onChange:
           view === 'map' ? 'bg-white dark:bg-slate-700 text-primary shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
         }`}
       >
-        <MapIcon className="h-4 w-4" /> Mappa
+        <MapIcon className="h-4 w-4" /> {t('map.map_view')}
       </button>
     </div>
   )

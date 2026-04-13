@@ -124,7 +124,7 @@ export default function DashboardPage() {
 
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{t('nav.dashboard')}</h1>
         <div className="flex items-center gap-2">
           <span className="text-sm text-slate-500 hidden sm:block">{user.email}</span>
           <button onClick={() => signOut()} className="px-3 py-1.5 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition flex items-center gap-1">

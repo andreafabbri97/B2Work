@@ -77,11 +77,11 @@ export default function GigsList() {
     try {
       const res = await fetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
       const data = await res.json()
-      if (!res.ok) throw new Error(data?.error || 'Errore nella candidatura')
+      if (!res.ok) throw new Error(data?.error || t('gigs.apply_error'))
       setApplying(null)
       showToast(t('gigs.apply_success'), 'success')
     } catch (err: unknown) {
-      showToast(err instanceof Error ? err.message : 'Errore sconosciuto', 'error')
+      showToast(err instanceof Error ? err.message : t('common.unknown_error'), 'error')
     }
   }
 

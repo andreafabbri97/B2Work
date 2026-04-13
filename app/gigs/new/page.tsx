@@ -8,7 +8,7 @@ import Badge from '@/components/b2colf/ui/Badge'
 import { Form, FormField, FormLabel, FormControl, ShadcnButton } from '@/components/b2colf/shadcn'
 import { useToast } from '@/components/b2colf/context/ToastContext'
 import { MapPin, Calendar, Clock, Euro, FileText, Tag, Briefcase, Eye } from 'lucide-react'
-import { ROLES } from '@/lib/constants'
+import { ROLES, ROLE_KEYS } from '@/lib/constants'
 import type { Category } from '@/lib/types'
 import { useLanguage } from '@/components/b2colf/context/LanguageContext'
 
@@ -130,7 +130,7 @@ export default function NewGigPage() {
                   className="w-full border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                 >
                   <option value="">{t('newgig.select_role')}</option>
-                  {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
+                  {ROLES.map((r, i) => <option key={r} value={r}>{t(ROLE_KEYS[i])}</option>)}
                 </select>
               </FormControl>
               {errors.role && <p className="text-xs text-danger mt-1">{errors.role}</p>}

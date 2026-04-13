@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Send, ArrowLeft, User } from 'lucide-react'
 import { useAuth } from '@/components/b2colf/context/AuthContext'
+import { useLanguage } from '@/components/b2colf/context/LanguageContext'
 import type { Message, Conversation } from '@/lib/types'
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
 
 export default function ChatWindow({ conversation, onBack }: Props) {
   const { user, supabase } = useAuth()
+  const { t } = useLanguage()
   const [messages, setMessages] = useState<Message[]>([])
   const [newMessage, setNewMessage] = useState('')
   const [sending, setSending] = useState(false)
@@ -117,7 +119,7 @@ export default function ChatWindow({ conversation, onBack }: Props) {
           {otherUser?.full_name?.charAt(0)?.toUpperCase() || <User className="h-4 w-4" />}
         </div>
         <div>
-          <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{otherUser?.full_name || 'Utente'}</div>
+          <div className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{otherUser?.full_name || t('chat.user_fallback')}</div>
           {otherUser?.role && <div className="text-xs text-slate-500">{otherUser.role}</div>}
         </div>
       </div>
@@ -126,7 +128,7 @@ export default function ChatWindow({ conversation, onBack }: Props) {
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-slate-50/50 dark:bg-slate-800/50">
         {messages.length === 0 && (
           <div className="text-center text-sm text-slate-400 py-8">
-            Inizia la conversazione...
+            {t('chat.start_conversation')}
           </div>
         )}
         {messages.map((msg) => {
@@ -159,7 +161,7 @@ export default function ChatWindow({ conversation, onBack }: Props) {
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Scrivi un messaggio..."
+          placeholder={t('chat.message_placeholder')}
           className="flex-1 border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
           maxLength={2000}
         />
@@ -177,22 +179,23 @@ export default function ChatWindow({ conversation, onBack }: Props) {
 
 // Quick message templates
 export function QuickMessages({ onSelect }: { onSelect: (msg: string) => void }) {
+  const { t } = useLanguage()
   const templates = [
-    'Ciao, sei disponibile per questo lavoro?',
-    'Confermo la prenotazione, grazie!',
-    'Possiamo discutere i dettagli?',
-    'A che ora possiamo iniziare?',
+    t('chat.template1'),
+    t('chat.template2'),
+    t('chat.template3'),
+    t('chat.template4'),
   ]
 
   return (
     <div className="flex flex-wrap gap-2 px-4 py-2">
-      {templates.map((t) => (
+      {templates.map((tpl) => (
         <button
-          key={t}
-          onClick={() => onSelect(t)}
+          key={tpl}
+          onClick={() => onSelect(tpl)}
           className="text-xs px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition"
         >
-          {t}
+          {tpl}
         </button>
       ))}
     </div>

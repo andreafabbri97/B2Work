@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Bell, MessageSquare, Star, Briefcase, Users, Check } from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@/components/b2colf/context/AuthContext'
+import { useLanguage } from '@/components/b2colf/context/LanguageContext'
 import type { Notification } from '@/lib/types'
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -26,6 +27,7 @@ function getNotificationLink(n: Notification): string {
 
 export default function NotificationBell() {
   const { user, supabase, isDemo } = useAuth()
+  const { t } = useLanguage()
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [open, setOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -127,17 +129,17 @@ export default function NotificationBell() {
       {open && (
         <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-2xl shadow-soft-xl z-50 overflow-hidden animate-fade-in-up">
           <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-slate-700">
-            <h3 className="font-semibold text-slate-900 dark:text-slate-100">Notifiche</h3>
+            <h3 className="font-semibold text-slate-900 dark:text-slate-100">{t('notifications.title')}</h3>
             {unreadCount > 0 && (
               <button onClick={markAllRead} className="text-xs text-primary hover:underline flex items-center gap-1">
-                <Check className="h-3 w-3" /> Segna tutte come lette
+                <Check className="h-3 w-3" /> {t('notifications.mark_all_read')}
               </button>
             )}
           </div>
 
           <div className="max-h-96 overflow-y-auto">
             {notifications.length === 0 ? (
-              <div className="p-8 text-center text-sm text-slate-500">Nessuna notifica</div>
+              <div className="p-8 text-center text-sm text-slate-500">{t('notifications.empty')}</div>
             ) : (
               notifications.map((n) => (
                 <Link
@@ -161,7 +163,7 @@ export default function NotificationBell() {
                     {n.body && <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{n.body}</p>}
                     {n.created_at && (
                       <p className="text-[10px] text-slate-400 mt-1">
-                        {formatTimeAgo(n.created_at)}
+                        {formatTimeAgo(n.created_at, t)}
                       </p>
                     )}
                   </div>
@@ -176,7 +178,7 @@ export default function NotificationBell() {
   )
 }
 
-function formatTimeAgo(dateStr: string): string {
+function formatTimeAgo(dateStr: string, t: (key: string) => string): string {
   const now = Date.now()
   const date = new Date(dateStr).getTime()
   const diff = now - date
@@ -184,9 +186,9 @@ function formatTimeAgo(dateStr: string): string {
   const hours = Math.floor(diff / 3600000)
   const days = Math.floor(diff / 86400000)
 
-  if (minutes < 1) return 'Adesso'
-  if (minutes < 60) return `${minutes} min fa`
-  if (hours < 24) return `${hours} ore fa`
-  if (days < 7) return `${days} giorni fa`
+  if (minutes < 1) return t('notifications.now')
+  if (minutes < 60) return `${minutes} ${t('notifications.min_ago')}`
+  if (hours < 24) return `${hours} ${t('notifications.hours_ago')}`
+  if (days < 7) return `${days} ${t('notifications.days_ago')}`
   return new Date(dateStr).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' })
 }

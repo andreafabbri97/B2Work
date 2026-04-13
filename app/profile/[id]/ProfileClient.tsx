@@ -14,9 +14,9 @@ import { getProfileById, getGigs, getReviews } from '@/lib/api'
 
 type Tab = 'about' | 'gigs' | 'reviews'
 
-const DAYS_IT: Record<string, string> = {
-  mon: 'Lunedi', tue: 'Martedi', wed: 'Mercoledi', thu: 'Giovedi',
-  fri: 'Venerdi', sat: 'Sabato', sun: 'Domenica',
+const DAY_LABEL_KEYS: Record<string, string> = {
+  mon: 'profileedit.day_mon', tue: 'profileedit.day_tue', wed: 'profileedit.day_wed', thu: 'profileedit.day_thu',
+  fri: 'profileedit.day_fri', sat: 'profileedit.day_sat', sun: 'profileedit.day_sun',
 }
 
 export default function ProfileClient() {
@@ -257,7 +257,7 @@ export default function ProfileClient() {
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {Object.entries(profile.availability).map(([day, slots]) => (
                         <div key={day} className="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl">
-                          <div className="text-xs font-medium text-slate-700 dark:text-slate-300">{DAYS_IT[day] || day}</div>
+                          <div className="text-xs font-medium text-slate-700 dark:text-slate-300">{DAY_LABEL_KEYS[day] ? t(DAY_LABEL_KEYS[day]) : day}</div>
                           <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                             {Array.isArray(slots) ? slots.join(', ') : String(slots)}
                           </div>

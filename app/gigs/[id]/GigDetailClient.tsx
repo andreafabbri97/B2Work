@@ -54,11 +54,11 @@ export default function GigDetailClient() {
         body: JSON.stringify({ gig_id: gig.id, date: date ? new Date(date).toISOString() : undefined, total_price: gig.price }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data?.error || 'Errore nella candidatura')
+      if (!res.ok) throw new Error(data?.error || t('gigs.apply_error'))
       setApplying(false)
       showToast(t('gigs.apply_success'), 'success')
     } catch (err: unknown) {
-      showToast(err instanceof Error ? err.message : 'Errore sconosciuto', 'error')
+      showToast(err instanceof Error ? err.message : t('common.unknown_error'), 'error')
     }
   }
 
