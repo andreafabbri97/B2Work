@@ -162,7 +162,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { data: null, error: { message: 'OAuth non configurato' } }
     }
     const redirectTo = typeof window !== 'undefined'
-      ? window.location.origin + '/B2Work/dashboard/'
+      ? window.location.origin + '/B2Work/profile/setup/'
       : undefined
     return supabase.auth.signInWithOAuth({ provider, options: { redirectTo } as any })
   }

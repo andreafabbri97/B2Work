@@ -323,5 +323,18 @@
   "profileedit.error_role": "Seleziona un ruolo",
   "profileedit.error_auth": "Autenticazione richiesta",
   "profileedit.error_save": "Errore nel salvataggio",
-  "profileedit.must_auth": "Devi essere autenticato"
+  "profileedit.must_auth": "Devi essere autenticato",
+
+  "setup.welcome": "Configura il tuo profilo",
+  "setup.subtitle": "Dicci chi sei per personalizzare la tua esperienza su B2Work.",
+  "setup.choose_type": "Come vuoi usare B2Work?",
+  "setup.worker_title": "Cerco lavoro",
+  "setup.worker_desc": "Sono un professionista e voglio trovare opportunità di lavoro flessibile.",
+  "setup.host_title": "Cerco personale",
+  "setup.host_desc": "Sono un datore di lavoro e voglio pubblicare annunci e trovare professionisti.",
+  "setup.continue": "Continua",
+  "setup.complete_profile": "Completa il tuo profilo",
+  "setup.worker_details_desc": "Inserisci le informazioni base per iniziare a candidarti.",
+  "setup.host_details_desc": "Inserisci le informazioni base per iniziare a pubblicare annunci.",
+  "setup.start_using": "Inizia a usare B2Work"
 }

@@ -38,7 +38,7 @@ export default function SignInPage() {
       const res = await signIn(email, password)
       if (res.error) throw res.error
       showToast(t('signin.login_success'), 'success')
-      router.push('/dashboard')
+      router.push('/profile/setup')
     } catch (err: any) {
       setError(err.message || t('signin.error_invalid_credentials'))
     } finally {
@@ -58,7 +58,7 @@ export default function SignInPage() {
       if (res.error) throw res.error
       await fetch('/api/profiles/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, full_name: '', role: 'WORKER' }) })
       showToast(t('signin.register_success'), 'success')
-      router.push('/dashboard')
+      router.push('/profile/setup')
     } catch (err: any) {
       setError(err.message || t('signin.error_register'))
     } finally {
