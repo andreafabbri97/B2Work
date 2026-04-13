@@ -85,8 +85,8 @@ export function Navbar() {
       {/* Mobile drawer */}
       {mobileOpen && (
         <>
-          <div className="fixed inset-0 bg-black/40 z-40 md:hidden" onClick={() => setMobileOpen(false)} />
-          <div className="fixed top-0 right-0 h-full w-72 bg-white dark:bg-slate-900 z-50 shadow-soft-xl animate-slide-in-right md:hidden flex flex-col overflow-y-auto">
+          <div className="fixed inset-0 bg-black/50 z-[60] md:hidden" onClick={() => setMobileOpen(false)} />
+          <div className="fixed top-0 right-0 h-full w-[280px] bg-white dark:bg-slate-900 z-[70] shadow-2xl animate-slide-in-right md:hidden flex flex-col overflow-y-auto">
             <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-800">
               <span className="font-bold text-lg text-primary flex items-center gap-2">
                 <Briefcase className="h-5 w-5" />
