@@ -328,7 +328,7 @@ export default function EditProfilePage() {
               </h3>
               <div className="flex flex-wrap gap-2 mb-3">
                 {form.certificates.map((cert) => (
-                  <span key={cert} className="inline-flex items-center gap-1 px-3 py-1.5 bg-secondary-50 dark:bg-secondary-900/30 text-secondary-700 rounded-lg text-sm font-medium">
+                  <span key={cert} className="inline-flex items-center gap-1 px-3 py-1.5 bg-secondary-50 dark:bg-secondary-900/50 text-secondary-700 rounded-lg text-sm font-medium">
                     {cert}
                     <button type="button" onClick={() => removeCertificate(cert)} className="ml-1 hover:text-danger">
                       <X className="h-3.5 w-3.5" />

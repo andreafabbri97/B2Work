@@ -21,7 +21,7 @@ export default class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="min-h-[50vh] flex flex-col items-center justify-center text-center px-4 py-16">
-          <div className="p-4 bg-danger-50 dark:bg-danger-900/30 rounded-full mb-4">
+          <div className="p-4 bg-danger-50 dark:bg-danger-900/50 rounded-full mb-4">
             <AlertTriangle className="h-8 w-8 text-danger" />
           </div>
           <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Qualcosa è andato storto</h2>

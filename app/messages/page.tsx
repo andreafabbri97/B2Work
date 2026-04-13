@@ -127,7 +127,7 @@ export default function MessagesPage() {
                     key={c.id}
                     onClick={() => setSelected(c)}
                     className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition text-left border-b border-slate-50 dark:border-slate-800 ${
-                      selected?.id === c.id ? 'bg-primary-50 dark:bg-primary-900/30' : ''
+                      selected?.id === c.id ? 'bg-primary-50 dark:bg-primary-900/50' : ''
                     }`}
                   >
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-100 to-primary-300 flex items-center justify-center text-primary font-semibold text-sm flex-shrink-0">

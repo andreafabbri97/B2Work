@@ -9,19 +9,19 @@ const STEP_CONFIGS = [
     icon: PenSquare,
     titleKey: 'howitworks.step1',
     descKey: 'howitworks.step1_desc',
-    color: 'bg-primary-50 text-primary dark:bg-primary-900/30',
+    color: 'bg-primary-50 text-primary dark:bg-primary-900/50',
   },
   {
     icon: Users,
     titleKey: 'howitworks.step2',
     descKey: 'howitworks.step2_desc',
-    color: 'bg-secondary-50 text-secondary dark:bg-secondary-900/30',
+    color: 'bg-secondary-50 text-secondary dark:bg-secondary-900/50',
   },
   {
     icon: Handshake,
     titleKey: 'howitworks.step3',
     descKey: 'howitworks.step3_desc',
-    color: 'bg-accent-50 text-accent-600 dark:bg-accent-900/30',
+    color: 'bg-accent-50 text-accent-600 dark:bg-accent-900/50',
   },
 ]
 

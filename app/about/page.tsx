@@ -28,7 +28,7 @@ export default function AboutPage() {
       </div>
 
       {/* Mission */}
-      <section className="bg-gradient-to-br from-primary-50 to-white dark:from-primary-900/30 dark:to-slate-900 border border-primary-100 dark:border-primary-800 rounded-2xl p-8 mb-12">
+      <section className="bg-gradient-to-br from-primary-50 to-white dark:from-primary-900/50 dark:to-slate-900 border border-primary-100 dark:border-primary-800 rounded-2xl p-8 mb-12">
         <div className="flex items-start gap-4">
           <div className="p-3 bg-primary-100 dark:bg-primary-900/50 rounded-xl">
             <Target className="h-8 w-8 text-primary" />
@@ -62,7 +62,7 @@ export default function AboutPage() {
         <p className="text-slate-600 dark:text-slate-400 mb-6">{t('about.team_desc')}</p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {['Marco R.', 'Sara L.', 'Andrea P.', 'Giulia M.'].map((name) => (
-            <div key={name} className="bg-white dark:bg-slate-900 rounded-xl p-4 shadow-soft">
+            <div key={name} className="bg-white dark:bg-slate-900 rounded-xl p-4 shadow-soft dark:shadow-slate-900/50">
               <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/50 rounded-full mx-auto mb-3 flex items-center justify-center text-primary font-bold text-lg">
                 {name.split(' ').map(n => n[0]).join('')}
               </div>

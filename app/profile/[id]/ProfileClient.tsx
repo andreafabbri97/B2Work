@@ -129,7 +129,7 @@ export default function ProfileClient() {
 
       <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700 rounded-2xl overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/30 dark:to-secondary-900/30 px-6 sm:px-8 pt-8 pb-12" />
+        <div className="bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/30 dark:to-secondary-900/50 px-6 sm:px-8 pt-8 pb-12" />
 
         <div className="px-6 sm:px-8 -mt-10 pb-8">
           {/* Avatar + info */}
@@ -151,7 +151,7 @@ export default function ProfileClient() {
                 <span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{profile.city}</span>
               </div>
             </div>
-            <div className="flex items-center gap-1 bg-accent-50 dark:bg-accent-900/30 px-3 py-1.5 rounded-lg">
+            <div className="flex items-center gap-1 bg-accent-50 dark:bg-accent-900/50 px-3 py-1.5 rounded-lg">
               <Star className="h-5 w-5 text-accent fill-accent" />
               <span className="font-bold text-slate-800 dark:text-slate-200">{profile.rating_avg?.toFixed(1) || 'N/A'}</span>
             </div>
@@ -160,22 +160,22 @@ export default function ProfileClient() {
           {/* Quick stats */}
           <div className="mt-4 flex flex-wrap gap-2">
             {profile.hourly_rate && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-50 dark:bg-primary-900/30 rounded-full text-sm text-primary-700 dark:text-primary-300 font-medium">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-50 dark:bg-primary-900/50 rounded-full text-sm text-primary-700 dark:text-primary-300 font-medium">
                 <Euro className="h-3.5 w-3.5" />{profile.hourly_rate}/h
               </span>
             )}
             {profile.response_time_hours && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-success-50 dark:bg-success-900/30 rounded-full text-sm text-success-600 dark:text-success-400 font-medium">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-success-50 dark:bg-success-900/50 rounded-full text-sm text-success-600 dark:text-success-400 font-medium">
                 <Clock className="h-3.5 w-3.5" />{t('profiles.responds_in')}{profile.response_time_hours}h
               </span>
             )}
             {profile.verified && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-50 dark:bg-primary-900/30 rounded-full text-sm text-primary-700 dark:text-primary-300 font-medium">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary-50 dark:bg-primary-900/50 rounded-full text-sm text-primary-700 dark:text-primary-300 font-medium">
                 <Shield className="h-3.5 w-3.5" />{t('profiles.verified')}
               </span>
             )}
             {reviews.length > 0 && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-accent-50 dark:bg-accent-900/30 rounded-full text-sm text-accent-600 dark:text-accent-400 font-medium">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-accent-50 dark:bg-accent-900/50 rounded-full text-sm text-accent-600 dark:text-accent-400 font-medium">
                 <Star className="h-3.5 w-3.5" />{reviews.length} {t('profiles.reviews_count')}
               </span>
             )}
@@ -191,7 +191,7 @@ export default function ProfileClient() {
           {profile.certificates && profile.certificates.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-2">
               {profile.certificates.map((cert) => (
-                <span key={cert} className="inline-flex items-center gap-1 px-2.5 py-1 bg-secondary-50 dark:bg-secondary-900/30 rounded-lg text-xs text-secondary-700 dark:text-secondary-300 font-medium">
+                <span key={cert} className="inline-flex items-center gap-1 px-2.5 py-1 bg-secondary-50 dark:bg-secondary-900/50 rounded-lg text-xs text-secondary-700 dark:text-secondary-300 font-medium">
                   <Award className="h-3 w-3" />{cert}
                 </span>
               ))}

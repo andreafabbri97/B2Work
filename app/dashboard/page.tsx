@@ -116,7 +116,7 @@ export default function DashboardPage() {
     <div className="max-w-4xl mx-auto">
       {/* Demo banner */}
       {isDemo && (
-        <div className="mb-4 p-3 bg-accent-50 dark:bg-accent-900/30 border border-accent-400 rounded-xl flex items-center gap-2 text-sm text-accent-600">
+        <div className="mb-4 p-3 bg-accent-50 dark:bg-accent-900/50 border border-accent-400 rounded-xl flex items-center gap-2 text-sm text-accent-600">
           <Info className="h-4 w-4 flex-shrink-0" />
           <span><strong>{t('signin.demo_mode')}</strong> — {t('dashboard.demo_banner')}</span>
         </div>
@@ -134,7 +134,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Profile card */}
-      <div className="bg-gradient-to-r from-primary-50 dark:from-primary-900/30 to-white dark:to-slate-900 border border-slate-100 dark:border-slate-700 rounded-2xl p-6 mb-6">
+      <div className="bg-gradient-to-r from-primary-50 dark:from-primary-900/50 to-white dark:to-slate-900 border border-slate-100 dark:border-slate-700 rounded-2xl p-6 mb-6">
         <div className="flex items-center gap-4 flex-wrap">
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-200 to-primary-400 flex items-center justify-center text-white font-bold text-xl overflow-hidden">
             {profile?.avatar_url ? (

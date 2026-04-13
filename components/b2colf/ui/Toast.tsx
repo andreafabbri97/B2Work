@@ -11,9 +11,9 @@ const icons = {
 }
 
 const bgColors = {
-  success: 'bg-success-50 dark:bg-success-900/30 border-success/20',
-  error: 'bg-danger-50 dark:bg-danger-900/30 border-danger/20',
-  info: 'bg-primary-50 dark:bg-primary-900/30 border-primary/20',
+  success: 'bg-success-50 dark:bg-success-900/50 border-success/20',
+  error: 'bg-danger-50 dark:bg-danger-900/50 border-danger/20',
+  info: 'bg-primary-50 dark:bg-primary-900/50 border-primary/20',
 }
 
 export default function ToastContainer() {
@@ -26,7 +26,7 @@ export default function ToastContainer() {
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={`flex items-center gap-3 px-4 py-3 rounded-lg border shadow-soft ${bgColors[toast.type]} ${
+          className={`flex items-center gap-3 px-4 py-3 rounded-lg border shadow-soft dark:shadow-slate-900/50 ${bgColors[toast.type]} ${
             toast.leaving ? 'animate-toast-out' : 'animate-toast-in'
           }`}
         >

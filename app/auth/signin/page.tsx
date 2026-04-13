@@ -88,7 +88,7 @@ export default function SignInPage() {
 
         {/* Demo credentials panel */}
         {isDemo && (
-          <div className="bg-primary-50 dark:bg-primary-900/30 border border-primary-200 rounded-2xl p-5 mb-4">
+          <div className="bg-primary-50 dark:bg-primary-900/50 border border-primary-200 rounded-2xl p-5 mb-4">
             <div className="flex items-start gap-2 mb-3">
               <Info className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
               <div>
@@ -119,7 +119,7 @@ export default function SignInPage() {
           </div>
         )}
 
-        <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700 rounded-2xl p-6 sm:p-8 shadow-soft">
+        <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-700 rounded-2xl p-6 sm:p-8 shadow-soft dark:shadow-slate-900/50">
           {/* Tabs */}
           <div className="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1 mb-6">
             <button
@@ -137,7 +137,7 @@ export default function SignInPage() {
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-danger-50 dark:bg-danger-900/30 border border-danger-200 rounded-xl text-sm text-danger-700">
+            <div className="mb-4 p-3 bg-danger-50 dark:bg-danger-900/50 border border-danger-200 rounded-xl text-sm text-danger-700">
               {error}
             </div>
           )}

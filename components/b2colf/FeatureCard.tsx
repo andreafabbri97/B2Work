@@ -10,10 +10,10 @@ type Props = {
 }
 
 const ICON_CONFIG = {
-  users: { Icon: Users, bg: 'bg-primary-50 dark:bg-primary-900/30', text: 'text-primary', border: 'group-hover:border-primary-200' },
-  calendar: { Icon: Calendar, bg: 'bg-secondary-50 dark:bg-secondary-900/30', text: 'text-secondary', border: 'group-hover:border-secondary-200' },
-  check: { Icon: CheckCircle, bg: 'bg-success-50 dark:bg-success-900/30', text: 'text-success', border: 'group-hover:border-success-200' },
-  briefcase: { Icon: Briefcase, bg: 'bg-accent-50 dark:bg-accent-900/30', text: 'text-accent-600', border: 'group-hover:border-accent-200' },
+  users: { Icon: Users, bg: 'bg-primary-50 dark:bg-primary-900/50', text: 'text-primary', border: 'group-hover:border-primary-200' },
+  calendar: { Icon: Calendar, bg: 'bg-secondary-50 dark:bg-secondary-900/50', text: 'text-secondary', border: 'group-hover:border-secondary-200' },
+  check: { Icon: CheckCircle, bg: 'bg-success-50 dark:bg-success-900/50', text: 'text-success', border: 'group-hover:border-success-200' },
+  briefcase: { Icon: Briefcase, bg: 'bg-accent-50 dark:bg-accent-900/50', text: 'text-accent-600', border: 'group-hover:border-accent-200' },
 }
 
 export default function FeatureCard({ title, desc, icon }: Props) {
